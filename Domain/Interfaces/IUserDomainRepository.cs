@@ -11,11 +11,10 @@ namespace Domain.Interfaces.Generics
     public interface IUserDomainRepository : IGenericDataRepository<UserEntity>
     {
         int CreateUser(UserEntity user);
-        void DeleteUser(int id);
-        void UpdateUserInfo(UserEntity user);
+        bool DeleteUser(int id);
         UserEntity GetUserById(int id);
         UserEntity GetUserByEmail(string email);
         List<UserEntity> GetAllUsers();
-        void ForgotPassword(string email);
+        bool ForgotPassword(string email, byte[] passwordHash, byte[] passwordSalt);
     }
 }

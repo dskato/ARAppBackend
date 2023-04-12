@@ -18,18 +18,28 @@ namespace Infrastructure.Data.Repositories
             return user.Id;
         }
 
-        public void DeleteUser(int id)
+        public bool DeleteUser(int id)
         {
             var user = this.GetUserById(id);
             if (user != null)
             {
                 this.RemoveSync(user);
+                return true;
             }
+            return false;
         }
 
-        public void ForgotPassword(string email)
+        public bool ForgotPassword(string email, byte[] passwordHash, byte[] passwordSalt)
         {
-            throw new NotImplementedException();
+            var user = GetUserByEmail(email);
+            if (user == null) {
+                return false;
+            }
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            Update(user);
+
+            return true;
         }
 
         public List<UserEntity> GetAllUsers()
@@ -50,9 +60,6 @@ namespace Infrastructure.Data.Repositories
             return user;
         }
 
-        public void UpdateUserInfo(UserEntity user)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

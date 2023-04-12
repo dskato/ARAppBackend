@@ -8,14 +8,20 @@ namespace ARAppBackend
         private readonly IGameDomainRepository _gameDomainRepository;
         private readonly IGameMetricDomainRepository _gameMetricDomainRepository;
         private readonly IUserDomainRepository _userDomainRepository;
+        private readonly IConfiguration _configuration;
 
 
-        public ApplicationService(IClassDomainRepository classDomainRepository, IGameDomainRepository gameDomainRepository, IGameMetricDomainRepository gameMetricDomainRepository, IUserDomainRepository userDomainRepository)
+
+
+        public ApplicationService(IConfiguration configuration, IClassDomainRepository classDomainRepository, IGameDomainRepository gameDomainRepository, IGameMetricDomainRepository gameMetricDomainRepository, IUserDomainRepository userDomainRepository)
         {
             this._classDomainRepository = classDomainRepository;
             this._gameDomainRepository = gameDomainRepository;
             this._gameMetricDomainRepository = gameMetricDomainRepository;
             this._userDomainRepository = userDomainRepository;
+            this._configuration = configuration; 
         }
+
+
     }
 }

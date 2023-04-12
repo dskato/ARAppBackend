@@ -1,6 +1,14 @@
-﻿namespace ARAppBackend.Services.User.interfaces
+﻿using ARAppBackend.DTOs.User;
+
+namespace ARAppBackend
 {
-    public class IUserService
+    public partial interface IApplicationService
     {
+        GetUserResponse CreateUser(CreateUserRequest request);
+        GetUserResponse GetUserById(int id);
+        GetUserResponse GetUserByEmail(string email);
+        bool DeleteUserById(int id);
+        List<GetUserResponse> GetAllUsers();
+        bool ForgotPassword(string email, string newPassword);
     }
 }
