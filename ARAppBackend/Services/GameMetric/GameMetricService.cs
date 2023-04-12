@@ -5,7 +5,7 @@ namespace ARAppBackend
 {
     public partial class ApplicationService : IApplicationService
     {
-        public GetGameMetricResponse CreateGame(CreateGameMetricRequest request) { 
+        public GetGameMetricResponse CreateGameMetric(CreateGameMetricRequest request) { 
 
             var response = new GetGameMetricResponse();
             GameMetricEntity entity = new GameMetricEntity();
@@ -80,7 +80,7 @@ namespace ARAppBackend
             return responseLs;
         }
 
-        public GetGameMetricResponse EditGameInfo(UpdateGameMetricRequest request) { 
+        public GetGameMetricResponse EditGameMetricInfo(UpdateGameMetricRequest request) { 
         
             var response = new GetGameMetricResponse();
 

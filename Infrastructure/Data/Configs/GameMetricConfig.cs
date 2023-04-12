@@ -17,9 +17,9 @@ namespace Infrastructure.Data.Configs
             builder.ToTable("game_metrics");
             builder.HasKey(x => x.Id);
 
-            builder.HasOne(p => p.Game).WithMany(u => u.GameMetrics).HasForeignKey(p => p.GameId);
-            builder.HasOne(p => p.User).WithMany(u => u.GameMetrics).HasForeignKey(p => p.UserId);
-            builder.HasOne(p => p.Class).WithMany(u => u.GameMetrics).HasForeignKey(p => p.ClassId);
+            builder.HasOne(p => p.Game).WithMany(u => u.GameMetrics).HasForeignKey(p => p.GameId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(p => p.User).WithMany(u => u.GameMetrics).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.NoAction); 
+            builder.HasOne(p => p.Class).WithMany(u => u.GameMetrics).HasForeignKey(p => p.ClassId).OnDelete(DeleteBehavior.NoAction); 
         }
     }
     
