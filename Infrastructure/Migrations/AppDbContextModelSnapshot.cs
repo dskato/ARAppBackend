@@ -192,7 +192,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.UserEntity", "User")
                         .WithMany("GameMetrics")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Class");

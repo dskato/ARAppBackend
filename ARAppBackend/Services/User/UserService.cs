@@ -24,6 +24,7 @@ namespace ARAppBackend
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             user.Role = request.Role;
+            user.CreateDate = DateTime.UtcNow;
 
             var userId = this._userDomainRepository.CreateUser(user);
 
@@ -31,7 +32,6 @@ namespace ARAppBackend
             response.Firstname = user.Firstname;
             response.Lastname = user.Lastname;
             response.Email = user.Email;
-            response.Token = CreateToken(request);
 
 
             return response;
@@ -52,6 +52,29 @@ namespace ARAppBackend
             response.Firstname = user.Firstname;
             response.Lastname = user.Lastname;
             response.Email = user.Email;
+
+            return response;
+        }
+
+        public GetUserResponse LogIn(string email, string password) { 
+        
+            GetUserResponse response = new GetUserResponse();
+
+            var user = this._userDomainRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                throw new Exception("Incorrect email or password");
+            }
+            if (!PasswordUtils.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                throw new Exception("Incorrect email or password");
+            }
+            response.Id = user.Id;
+            response.Firstname = user.Firstname;
+            response.Lastname = user.Lastname;
+            response.Email = user.Email;
+            response.Token = CreateToken(user);
+
 
             return response;
         }
