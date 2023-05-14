@@ -56,8 +56,9 @@ namespace ARAppBackend
             return response;
         }
 
-        public GetUserResponse LogIn(string email, string password) { 
-        
+        public GetUserResponse LogIn(string email, string password)
+        {
+
             GetUserResponse response = new GetUserResponse();
 
             var user = this._userDomainRepository.GetUserByEmail(email);
@@ -98,6 +99,25 @@ namespace ARAppBackend
             return response;
         }
 
+        public bool UpdateUserById(UpdateUserRequest request)
+        {
+            var user = this._userDomainRepository.GetUserById(request.Id);
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.Firstname = request.Firstname;
+            user.Lastname = request.Lastname;
+            user.Email = request.Email;
+            user.Role = request.Role;
+
+            this._userDomainRepository.Update(user);
+
+
+            return true;
+
+        }
         public bool DeleteUserById(int id)
         {
 
@@ -130,6 +150,8 @@ namespace ARAppBackend
                 item.Firstname = user.Firstname;
                 item.Lastname = user.Lastname;
                 item.Email = user.Email;
+                item.Role = user.Role;
+                item.CreateDate = user.CreateDate;
                 response.Add(item);
 
             }
@@ -138,7 +160,8 @@ namespace ARAppBackend
 
         }
 
-        public bool ForgotPassword(string email, string newPassword) {
+        public bool ForgotPassword(string email, string newPassword)
+        {
 
             PasswordUtils.CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
 
