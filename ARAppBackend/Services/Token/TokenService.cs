@@ -1,4 +1,5 @@
 ﻿using ARAppBackend.DTOs.User;
+using Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,7 +10,7 @@ namespace ARAppBackend
     public partial class ApplicationService : IApplicationService
     {
 
-        public string CreateToken(CreateUserRequest user)
+        public string CreateToken(UserEntity user)
         {
             var _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AppSettings:Token"]));
 

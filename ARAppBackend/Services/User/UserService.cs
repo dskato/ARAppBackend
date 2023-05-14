@@ -24,6 +24,7 @@ namespace ARAppBackend
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             user.Role = request.Role;
+            user.CreateDate = DateTime.UtcNow;
 
             var userId = this._userDomainRepository.CreateUser(user);
 
@@ -31,7 +32,6 @@ namespace ARAppBackend
             response.Firstname = user.Firstname;
             response.Lastname = user.Lastname;
             response.Email = user.Email;
-            response.Token = CreateToken(request);
 
 
             return response;
@@ -56,6 +56,30 @@ namespace ARAppBackend
             return response;
         }
 
+        public GetUserResponse LogIn(string email, string password)
+        {
+
+            GetUserResponse response = new GetUserResponse();
+
+            var user = this._userDomainRepository.GetUserByEmail(email);
+            if (user == null)
+            {
+                throw new Exception("Incorrect email or password");
+            }
+            if (!PasswordUtils.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                throw new Exception("Incorrect email or password");
+            }
+            response.Id = user.Id;
+            response.Firstname = user.Firstname;
+            response.Lastname = user.Lastname;
+            response.Email = user.Email;
+            response.Token = CreateToken(user);
+
+
+            return response;
+        }
+
         public GetUserResponse GetUserByEmail(string email)
         {
 
@@ -75,6 +99,25 @@ namespace ARAppBackend
             return response;
         }
 
+        public bool UpdateUserById(UpdateUserRequest request)
+        {
+            var user = this._userDomainRepository.GetUserById(request.Id);
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.Firstname = request.Firstname;
+            user.Lastname = request.Lastname;
+            user.Email = request.Email;
+            user.Role = request.Role;
+
+            this._userDomainRepository.Update(user);
+
+
+            return true;
+
+        }
         public bool DeleteUserById(int id)
         {
 
@@ -107,6 +150,8 @@ namespace ARAppBackend
                 item.Firstname = user.Firstname;
                 item.Lastname = user.Lastname;
                 item.Email = user.Email;
+                item.Role = user.Role;
+                item.CreateDate = user.CreateDate;
                 response.Add(item);
 
             }
@@ -115,7 +160,8 @@ namespace ARAppBackend
 
         }
 
-        public bool ForgotPassword(string email, string newPassword) {
+        public bool ForgotPassword(string email, string newPassword)
+        {
 
             PasswordUtils.CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
 

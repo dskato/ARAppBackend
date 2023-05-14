@@ -28,6 +28,38 @@ namespace ARAppBackend.Controllers
             }
         }
 
+
+        [HttpPost]
+        [Route("post-updateuser")]
+        public IActionResult UpdateUser([FromForm] UpdateUserRequest request)
+        {
+            try
+            {
+                
+                var response = this._applicationService.UpdateUserById(request);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("post-login")]
+        public IActionResult LogIn([FromForm] string email, [FromForm] string password)
+        {
+            try
+            {
+                var response = this._applicationService.LogIn(email, password);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
         [HttpDelete]
         [Route("delete-deleteuser")]
         public IActionResult DeleteUser([FromForm] int id)

@@ -1,9 +1,10 @@
-﻿using ARAppBackend.DTOs.User;
+﻿
+using Domain.Entities;
 
 namespace ARAppBackend
 {
     public partial interface IApplicationService
     {
-        string CreateToken(CreateUserRequest user);
+        string CreateToken(UserEntity user);
     }
 }
