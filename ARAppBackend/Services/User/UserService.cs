@@ -20,6 +20,7 @@ namespace ARAppBackend
             UserEntity user = new UserEntity();
             user.Firstname = request.Firstname;
             user.Lastname = request.Lastname;
+            user.Age = request.Age;
             user.Email = request.Email;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
@@ -51,7 +52,9 @@ namespace ARAppBackend
             response.Id = user.Id;
             response.Firstname = user.Firstname;
             response.Lastname = user.Lastname;
+            response.Age = user.Age;
             response.Email = user.Email;
+            
 
             return response;
         }
@@ -73,6 +76,7 @@ namespace ARAppBackend
             response.Id = user.Id;
             response.Firstname = user.Firstname;
             response.Lastname = user.Lastname;
+            response.Age = user.Age;
             response.Email = user.Email;
             response.Token = CreateToken(user);
 
@@ -94,6 +98,7 @@ namespace ARAppBackend
             response.Id = user.Id;
             response.Firstname = user.Firstname;
             response.Lastname = user.Lastname;
+            response.Age = user.Age;
             response.Email = user.Email;
 
             return response;
@@ -110,7 +115,9 @@ namespace ARAppBackend
             user.Firstname = request.Firstname;
             user.Lastname = request.Lastname;
             user.Email = request.Email;
+            user.Age = request.Age;
             user.Role = request.Role;
+
 
             this._userDomainRepository.Update(user);
 
@@ -150,6 +157,7 @@ namespace ARAppBackend
                 item.Firstname = user.Firstname;
                 item.Lastname = user.Lastname;
                 item.Email = user.Email;
+                item.Age = user.Age;
                 item.Role = user.Role;
                 item.CreateDate = user.CreateDate;
                 response.Add(item);

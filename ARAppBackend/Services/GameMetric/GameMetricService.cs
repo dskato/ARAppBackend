@@ -15,6 +15,12 @@ namespace ARAppBackend
             entity.ClassId = request.ClassId;
             entity.Score = request.Score;
             entity.TimeElapsed = request.TimeElapsed;
+            entity.IsGameCompleted = request.IsGameCompleted;
+            entity.PercentageOfCompletion  = request.PercentageOfCompletion;
+            entity.SuccessCount = request.SuccessCount;
+            entity.FailureCount = request.FailureCount;
+            entity.Difficulty  = request.Difficulty;
+            entity.Comments = request.Comments;
 
             var iditem = this._gameMetricDomainRepository.CreateMetric(entity);
 
@@ -54,6 +60,13 @@ namespace ARAppBackend
             response.ClassId = entity.ClassId;
             response.Score = entity.Score;
             response.TimeElapsed = entity.TimeElapsed;
+            response.IsGameCompleted = entity.IsGameCompleted;
+            response.PercentageOfCompletion = entity.PercentageOfCompletion;
+            response.SuccessCount = entity.SuccessCount;
+            response.FailureCount = entity.FailureCount;
+            response.Difficulty = entity.Difficulty;
+            response.Comments = entity.Comments;
+
 
 
             return response;
@@ -73,6 +86,12 @@ namespace ARAppBackend
                 metric.ClassId = item.ClassId;
                 metric.Score = item.Score;
                 metric.TimeElapsed = item.TimeElapsed;
+                metric.IsGameCompleted = item.IsGameCompleted;
+                metric.PercentageOfCompletion = item.PercentageOfCompletion;
+                metric.SuccessCount = item.SuccessCount;
+                metric.FailureCount = item.FailureCount;
+                metric.Difficulty = item.Difficulty;
+                metric.Comments = item.Comments;
 
                 responseLs.Add(metric);
             }
@@ -95,6 +114,13 @@ namespace ARAppBackend
             entity.ClassId = request.ClassId;
             entity.Score = request.Score;
             entity.TimeElapsed = request.TimeElapsed;
+            entity.IsGameCompleted = request.IsGameCompleted;
+            entity.PercentageOfCompletion = request.PercentageOfCompletion;
+            entity.SuccessCount = request.SuccessCount;
+            entity.FailureCount = request.FailureCount;
+            entity.Difficulty = request.Difficulty;
+            entity.Comments = request.Comments;
+
 
             this._gameMetricDomainRepository.Update(entity);
 
@@ -104,6 +130,12 @@ namespace ARAppBackend
             response.ClassId = entity.ClassId;
             response.Score = entity.Score;
             response.TimeElapsed = entity.TimeElapsed;
+            response.IsGameCompleted = entity.IsGameCompleted;
+            response.PercentageOfCompletion = entity.PercentageOfCompletion;
+            response.SuccessCount = entity.SuccessCount;
+            response.FailureCount = entity.FailureCount;
+            response.Difficulty = entity.Difficulty;
+            response.Comments = entity.Comments;
 
             return response;
 

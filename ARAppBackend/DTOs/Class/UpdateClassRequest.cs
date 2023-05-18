@@ -3,8 +3,8 @@
     public class UpdateClassRequest
     {
         public int Id { get; set; }
-        public int? GameId { get; set; }
         public string? ClassName { get; set; }
+        public string? Grade { get; set; }
         public string? UserListId { get; set; }
     }
 }

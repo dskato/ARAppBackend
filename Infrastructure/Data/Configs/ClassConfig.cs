@@ -15,7 +15,6 @@ namespace Infrastructure.Data.Configs
         {
             builder.ToTable("classes");
             builder.HasKey(x => x.Id);
-            builder.HasOne(p => p.Game).WithMany(u => u.Classes).HasForeignKey(p => p.GameId);
         }
     }
 }

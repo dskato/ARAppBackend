@@ -10,8 +10,6 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string GameName { get; set; }
-        public string Difficulty { get; set; }
-        public virtual List<ClassEntity> Classes { get; set; } 
         public virtual List<GameMetricEntity> GameMetrics { get; set; } 
 
     }
