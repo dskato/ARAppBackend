@@ -8,5 +8,11 @@
         public int ClassId { get; set; }
         public string Score { get; set; }
         public string TimeElapsed { get; set; }
+        public bool IsGameCompleted { get; set; }
+        public double? PercentageOfCompletion { get; set; }
+        public int? SuccessCount { get; set; }
+        public int? FailureCount { get; set; }
+        public string? Difficulty { get; set; }
+        public string? Comments { get; set; }
     }
 }

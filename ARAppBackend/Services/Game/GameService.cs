@@ -11,13 +11,11 @@ namespace ARAppBackend
             GameEntity entity = new GameEntity();
 
             entity.GameName = request.GameName;
-            entity.Difficulty = request.Difficulty;
 
             var itemId = this._gameDomainRepository.CreateGame(entity);
 
             response.Id = itemId;
             response.GameName = entity.GameName;
-            response.Difficulty = entity.Difficulty;
 
             return response;
         }
@@ -43,7 +41,6 @@ namespace ARAppBackend
 
             response.Id = entity.Id;
             response.GameName = entity.GameName;
-            response.Difficulty = entity.Difficulty;
 
             return response;
 
@@ -59,13 +56,11 @@ namespace ARAppBackend
             }
 
             entity.GameName = request.GameName;
-            entity.Difficulty = request.Difficulty;
 
             this._gameDomainRepository.Update(entity);
 
             response.Id = entity.Id;
             response.GameName = entity.GameName;
-            response.Difficulty = entity.Difficulty;
 
             return response;
 
@@ -81,7 +76,6 @@ namespace ARAppBackend
                 var item = new GetGameResponse();
                 item.Id = entity.Id;
                 item.GameName = entity.GameName;
-                item.Difficulty = entity.Difficulty;
                 responseLs.Add(item);
 
             }

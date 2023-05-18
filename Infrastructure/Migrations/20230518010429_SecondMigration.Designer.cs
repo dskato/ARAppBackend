@@ -4,6 +4,7 @@ using Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230518010429_SecondMigration")]
+    partial class SecondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +39,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("GameEntityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Grade")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -49,6 +54,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GameEntityId");
 
                     b.ToTable("classes", (string)null);
                 });
@@ -180,6 +187,13 @@ namespace Infrastructure.Migrations
                     b.ToTable("users", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.ClassEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.GameEntity", null)
+                        .WithMany("Classes")
+                        .HasForeignKey("GameEntityId");
+                });
+
             modelBuilder.Entity("Domain.Entities.GameMetricEntity", b =>
                 {
                     b.HasOne("Domain.Entities.ClassEntity", "Class")
@@ -214,6 +228,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.GameEntity", b =>
                 {
+                    b.Navigation("Classes");
+
                     b.Navigation("GameMetrics");
                 });
 
