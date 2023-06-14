@@ -10,7 +10,6 @@ namespace ARAppBackend
         GetUserResponse GetUserByEmail(string email);
         bool DeleteUserById(int id);
         List<GetUserResponse> GetAllUsers();
-        bool ForgotPassword(string email, string newPassword);
         bool UpdateUserById(UpdateUserRequest request);
     }
 }

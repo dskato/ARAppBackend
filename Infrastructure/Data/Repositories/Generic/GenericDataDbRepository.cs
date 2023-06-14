@@ -30,6 +30,16 @@ namespace Infrastructure.Data.Repositories.Generic
             return result;
         }
 
+        public async Task<int> AddAsync(params T[] items)
+        {
+            foreach (T item in items)
+            {
+                Context.Entry(item).State = EntityState.Added;
+            }
+            var result = await Context.SaveChangesAsync();
+            return result;
+        }
+
         public virtual async Task<IList<T>> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
             IQueryable<T> dbQuery = Context.Set<T>();

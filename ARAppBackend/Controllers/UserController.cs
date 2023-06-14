@@ -1,4 +1,5 @@
 ﻿using ARAppBackend.Controllers.bases;
+using ARAppBackend.DTOs.RestorePassword;
 using ARAppBackend.DTOs.User;
 using Microsoft.AspNetCore.Mvc;
 
@@ -121,13 +122,43 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("put-forgotpassword")]
-        public IActionResult ForgotPassword([FromForm] string email, string newPassword)
+        [HttpPost]
+        [Route("post-createcode")]
+        public async Task<IActionResult> CreateCodeAsync([FromForm] CreatePasswordRestoreRequest request)
         {
             try
             {
-                var response = this._applicationService.ForgotPassword(email, newPassword);
+                var response = await this._applicationService.CreateCodeAsync(request);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("post-verifycode")]
+        public IActionResult VerifyCode([FromForm] string email, [FromForm] string code)
+        {
+            try
+            {
+                var response = this._applicationService.VerifyCode(email, code);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("post-restorepassword")]
+        public IActionResult RestorePassword([FromForm] string email, [FromForm] string newPassword)
+        {
+            try
+            {
+                var response = this._applicationService.ChangePassword(email, newPassword);
                 return Success(response);
             }
             catch (Exception exc)

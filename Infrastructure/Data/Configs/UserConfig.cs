@@ -16,6 +16,7 @@ namespace Infrastructure.Data.Configs
             builder.ToTable("users");
             builder.HasKey(x => x.Id);
             builder.HasMany(p => p.GameMetrics).WithOne(p => p.User).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(p => p.PasswordRestores).WithOne(p => p.User).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
