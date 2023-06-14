@@ -15,8 +15,9 @@ namespace Domain.Entities
         public int Age  { get; set; }
         public byte[]? PasswordHash { get; set; }
         public byte[]? PasswordSalt { get; set; }
-        public string Role { get; set; } // STUDENT, TEACHER
+        public string Role { get; set; } // STUDENT, TEACHER, ADMIN
         public virtual List<GameMetricEntity> GameMetrics { get; set; }
+        public virtual List<PasswordRestoreEntity> PasswordRestores { get; set; }
 
 
     }

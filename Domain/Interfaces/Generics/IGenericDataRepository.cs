@@ -10,6 +10,7 @@ namespace Domain.Interfaces.Generics
 {
     public interface IGenericDataRepository<T> where T : class
     {
+        Task<int> AddAsync(params T[] items);
         int AddSync(params T[] items);
         Task<int> Update(params T[] items);
         int RemoveSync(params T[] items);

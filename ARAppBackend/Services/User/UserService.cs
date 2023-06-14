@@ -168,15 +168,6 @@ namespace ARAppBackend
 
         }
 
-        public bool ForgotPassword(string email, string newPassword)
-        {
-
-            PasswordUtils.CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
-
-            var passChange = this._userDomainRepository.ForgotPassword(email, passwordHash, passwordSalt);
-            return passChange;
-
-        }
 
         private bool UserExists(string email)
         {
