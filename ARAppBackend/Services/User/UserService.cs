@@ -26,6 +26,7 @@ namespace ARAppBackend
             user.PasswordSalt = passwordSalt;
             user.Role = request.Role;
             user.CreateDate = DateTime.UtcNow;
+            user.Status = "Active";
 
             var userId = this._userDomainRepository.CreateUser(user);
 
@@ -100,6 +101,7 @@ namespace ARAppBackend
             response.Lastname = user.Lastname;
             response.Age = user.Age;
             response.Email = user.Email;
+            response.Status = user.Status;
 
             return response;
         }
@@ -160,6 +162,7 @@ namespace ARAppBackend
                 item.Age = user.Age;
                 item.Role = user.Role;
                 item.CreateDate = user.CreateDate;
+                item.Status = user.Status;
                 response.Add(item);
 
             }
