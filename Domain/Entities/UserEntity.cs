@@ -16,6 +16,7 @@ namespace Domain.Entities
         public byte[]? PasswordHash { get; set; }
         public byte[]? PasswordSalt { get; set; }
         public string Role { get; set; } // STUDENT, TEACHER, ADMIN
+        public string Status { get; set; } //Active, Inactive
         public virtual List<GameMetricEntity> GameMetrics { get; set; }
         public virtual List<PasswordRestoreEntity> PasswordRestores { get; set; }
 
