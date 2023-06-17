@@ -91,7 +91,7 @@ namespace ARAppBackend
 
             classEntity.ClassName = request.ClassName;
             classEntity.Grade = request.Grade;
-            this._classDomainRepository.Update(classEntity);
+            this._classDomainRepository.UpdateSync(classEntity);
 
 
             GetClassResponse response = new GetClassResponse();

@@ -124,7 +124,7 @@ namespace ARAppBackend
             user.Role = request.Role;
 
 
-            this._userDomainRepository.Update(user);
+            this._userDomainRepository.UpdateSync(user);
 
 
             return true;
@@ -174,6 +174,9 @@ namespace ARAppBackend
 
         }
 
+        public string ChangeStatus(int id, bool isUserActive) { 
+            return this._userDomainRepository.ChangeStatus(id, isUserActive);
+        }
 
         private bool UserExists(string email)
         {

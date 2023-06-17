@@ -62,7 +62,7 @@ namespace ARAppBackend
             entity.GameName = request.GameName;
             entity.Model = request.Model;
 
-            this._gameDomainRepository.Update(entity);
+            this._gameDomainRepository.UpdateSync(entity);
 
             response.Id = entity.Id;
             response.GameName = entity.GameName;

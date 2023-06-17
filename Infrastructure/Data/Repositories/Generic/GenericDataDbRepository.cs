@@ -73,5 +73,17 @@ namespace Infrastructure.Data.Repositories.Generic
 
         }
 
+        public int UpdateSync(params T[] items)
+        {
+
+            foreach (var item in items)
+            {
+                Context.Entry(item).State = EntityState.Modified;
+            }
+            var result = Context.SaveChanges();
+            return result;
+
+        }
+
     }
 }
