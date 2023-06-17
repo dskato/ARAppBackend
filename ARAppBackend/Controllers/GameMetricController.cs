@@ -44,8 +44,8 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpGet]
-        [Route("get-getgamemetricbyid")]
-        public IActionResult GetGameMetricById([FromForm] int id)
+        [Route("get-getgamemetricbyid/{id}")]
+        public IActionResult GetGameMetricById(int id)
         {
             try
             {

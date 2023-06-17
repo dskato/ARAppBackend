@@ -7,8 +7,10 @@ namespace ARAppBackend
         GetClassResponse CreateClass(CreateClassRequest request);
         bool DeleteClassById(int id);
         GetClassResponse GetClassById(int id);
+        GetClassResponse GetClassByCode(string code);
         List<GetClassResponse> GetAllClasses();
         GetClassResponse EditClassInfo(UpdateClassRequest request);
+
 
     }
 }

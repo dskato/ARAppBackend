@@ -2,8 +2,9 @@
 {
     public class CreateClassRequest
     {
+
         public string ClassName { get; set; }
         public string Grade { get; set; }
-        public string UserListId { get; set; }
+        public int UserId { get; set; }
     }
 }

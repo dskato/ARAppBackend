@@ -19,6 +19,7 @@ namespace Domain.Entities
         public string Status { get; set; } //Active, Inactive
         public virtual List<GameMetricEntity> GameMetrics { get; set; }
         public virtual List<PasswordRestoreEntity> PasswordRestores { get; set; }
+        public virtual List<MClassUserEntity> MClassUsers { get; set; }
 
 
     }

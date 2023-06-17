@@ -77,8 +77,8 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpGet]
-        [Route("get-getuserbyid")]
-        public IActionResult GetUserById([FromForm] int id)
+        [Route("get-getuserbyid/{id}")]
+        public IActionResult GetUserById(int id)
         {
             try
             {
@@ -92,8 +92,8 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpGet]
-        [Route("get-getuserbyemail")]
-        public IActionResult GetUserByEmail([FromForm] string email)
+        [Route("get-getuserbyemail/{email}")]
+        public IActionResult GetUserByEmail( string email)
         {
             try
             {

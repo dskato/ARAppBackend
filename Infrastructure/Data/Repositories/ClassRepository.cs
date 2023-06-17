@@ -42,6 +42,11 @@ namespace Infrastructure.Data.Repositories
             return entity;
         }
 
+        public ClassEntity GetClassByCode(string code)
+        {
+            ClassEntity entity = this.Context.ClassEntity.Where(x => x.Code == code).FirstOrDefault();
+            return entity;
+        }
 
         public void UpdateClass(ClassEntity clss)
         {
