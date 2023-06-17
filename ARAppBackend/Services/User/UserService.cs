@@ -55,6 +55,7 @@ namespace ARAppBackend
             response.Lastname = user.Lastname;
             response.Age = user.Age;
             response.Email = user.Email;
+            response.Role = user.Role;
             
 
             return response;
@@ -79,6 +80,7 @@ namespace ARAppBackend
             response.Lastname = user.Lastname;
             response.Age = user.Age;
             response.Email = user.Email;
+            response.Role = user.Role;
             response.Token = CreateToken(user);
 
 
@@ -102,6 +104,7 @@ namespace ARAppBackend
             response.Age = user.Age;
             response.Email = user.Email;
             response.Status = user.Status;
+            response.Role = user.Role;
 
             return response;
         }

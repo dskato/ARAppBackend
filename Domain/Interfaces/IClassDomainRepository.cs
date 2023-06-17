@@ -15,5 +15,6 @@ namespace Domain.Interfaces.Generics
         void UpdateClass(ClassEntity entity);
         List<ClassEntity> GetAllClasses();
         ClassEntity GetClassById(int id);
+        ClassEntity GetClassByCode(string code);
     }
 }

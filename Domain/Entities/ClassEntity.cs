@@ -11,9 +11,9 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string ClassName { get; set; }
         public string Grade { get; set; }
-        public string UserListId { get; set; }
-        public virtual List<GameMetricEntity> GameMetrics { get; set; } 
-
+        public string Code { get; set; }
+        public virtual List<GameMetricEntity> GameMetrics { get; set; }
+        public virtual List<MClassUserEntity> MClassUsers { get; set; }
 
     }
 }

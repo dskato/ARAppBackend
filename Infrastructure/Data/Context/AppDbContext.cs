@@ -25,6 +25,7 @@ namespace Infrastructure.Data.Context
             modelBuilder.ApplyConfiguration(new GameMetricConfig());
             modelBuilder.ApplyConfiguration(new UserConfig());
             modelBuilder.ApplyConfiguration(new PasswordRestoreConfig());
+            modelBuilder.ApplyConfiguration(new MClassUserConfig());
         }
 
         public DbSet<ClassEntity> ClassEntity { get; set; }
@@ -32,6 +33,7 @@ namespace Infrastructure.Data.Context
         public DbSet<GameMetricEntity> GameMetricEntity { get; set; }
         public DbSet<UserEntity> UserEntity { get; set; }
         public DbSet<PasswordRestoreEntity> PasswordRestoreEntity { get; set; }
+        public DbSet<MClassUserEntity> MClassUserEntity { get; set; }
 
 
 

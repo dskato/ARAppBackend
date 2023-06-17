@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string ClassName { get; set; }
         public string Grade { get; set; }
-        public string UserListId { get; set; }
+        public string Code { get; set; }
     }
 }

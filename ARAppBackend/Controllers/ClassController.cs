@@ -14,6 +14,22 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpPost]
+        [Route("post-adduserinclass")]
+        public IActionResult AddUserInClass([FromForm] int userId, [FromForm] string classCode)
+        {
+            try
+            {
+                this._applicationService.AddUserInClass(userId, classCode);
+                return Success("Usuario agregado en clase!");
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+
+        [HttpPost]
         [Route("post-createclass")]
         public IActionResult CreateClass([FromForm] CreateClassRequest request)
         {
@@ -44,8 +60,8 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpGet]
-        [Route("get-getclassbyid")]
-        public IActionResult GetClassById([FromForm] int id)
+        [Route("get-getclassbyid/{id}")]
+        public IActionResult GetClassById(int id)
         {
             try
             {
@@ -87,5 +103,36 @@ namespace ARAppBackend.Controllers
                 return this.BadRequest(exc.Message);
             }
         }
+
+        [HttpGet]
+        [Route("get-getusersinclass/{classId}")]
+        public IActionResult GetUsersInClassByClassId(int classId)
+        {
+            try
+            {
+                var response = this._applicationService.GetUsersInClassByClassId(classId);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-getclassesofuser/{userId}")]
+        public IActionResult GetClassesOfUserByUserId(int userId)
+        {
+            try
+            {
+                var response = this._applicationService.GetClassesOfUserByUserId(userId);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
     }
 }

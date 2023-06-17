@@ -44,8 +44,8 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpGet]
-        [Route("get-getgamebyid")]
-        public IActionResult GetGameById([FromForm] int id)
+        [Route("get-getgamebyid/{id}")]
+        public IActionResult GetGameById(int id)
         {
             try
             {
