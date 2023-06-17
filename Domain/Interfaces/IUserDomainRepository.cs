@@ -16,5 +16,6 @@ namespace Domain.Interfaces.Generics
         UserEntity GetUserByEmail(string email);
         List<UserEntity> GetAllUsers();
         bool ForgotPassword(string email, byte[] passwordHash, byte[] passwordSalt);
+        string ChangeStatus(int id, bool isUserActive);
     }
 }

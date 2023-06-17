@@ -37,7 +37,7 @@ namespace Infrastructure.Data.Repositories
             }
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            Update(user);
+            UpdateSync(user);
 
             return true;
         }
@@ -60,6 +60,19 @@ namespace Infrastructure.Data.Repositories
             return user;
         }
 
-      
+        public string ChangeStatus(int id, bool isUserActive) {
+
+            var user = this.Context.UserEntity.Where(x => x.Id == id).FirstOrDefault();
+            if (isUserActive)
+            {
+                user.Status = "Active";
+            }
+            else {
+                user.Status = "Inactive";
+            }
+            UpdateSync(user);
+
+            return user.Status;
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace ARAppBackend
         bool DeleteUserById(int id);
         List<GetUserResponse> GetAllUsers();
         bool UpdateUserById(UpdateUserRequest request);
+        string ChangeStatus(int id, bool isUserActive);
     }
 }

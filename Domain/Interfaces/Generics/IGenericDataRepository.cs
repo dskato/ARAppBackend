@@ -15,7 +15,7 @@ namespace Domain.Interfaces.Generics
         Task<int> Update(params T[] items);
         int RemoveSync(params T[] items);
         Task<IList<T>> GetAll(params Expression<Func<T, object>>[] navigationProperties);
-  
 
+        int UpdateSync(params T[] items);
     }
 }

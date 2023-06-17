@@ -122,7 +122,7 @@ namespace ARAppBackend
             entity.Comments = request.Comments;
 
 
-            this._gameMetricDomainRepository.Update(entity);
+            this._gameMetricDomainRepository.UpdateSync(entity);
 
             response.Id = entity.Id;
             response.GameId = entity.GameId;

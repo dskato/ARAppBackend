@@ -47,6 +47,21 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpPost]
+        [Route("post-changestatus")]
+        public IActionResult ChangeStatus([FromForm] int userId, bool isUserActive )
+        {
+            try
+            {
+                var response = this._applicationService.ChangeStatus(userId, isUserActive);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpPost]
         [Route("post-login")]
         public IActionResult LogIn([FromForm] string email, [FromForm] string password)
         {
