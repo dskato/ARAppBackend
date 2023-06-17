@@ -48,7 +48,7 @@ namespace ARAppBackend.Controllers
 
         [HttpPost]
         [Route("post-changestatus")]
-        public IActionResult ChangeStatus([FromForm] int userId, bool isUserActive )
+        public IActionResult ChangeStatus([FromForm] int userId,[FromForm] bool isUserActive )
         {
             try
             {
