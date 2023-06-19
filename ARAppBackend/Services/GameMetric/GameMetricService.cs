@@ -5,7 +5,8 @@ namespace ARAppBackend
 {
     public partial class ApplicationService : IApplicationService
     {
-        public GetGameMetricResponse CreateGameMetric(CreateGameMetricRequest request) { 
+        public GetGameMetricResponse CreateGameMetric(CreateGameMetricRequest request)
+        {
 
             var response = new GetGameMetricResponse();
             GameMetricEntity entity = new GameMetricEntity();
@@ -16,10 +17,10 @@ namespace ARAppBackend
             entity.Score = request.Score;
             entity.TimeElapsed = request.TimeElapsed;
             entity.IsGameCompleted = request.IsGameCompleted;
-            entity.PercentageOfCompletion  = request.PercentageOfCompletion;
+            entity.PercentageOfCompletion = request.PercentageOfCompletion;
             entity.SuccessCount = request.SuccessCount;
             entity.FailureCount = request.FailureCount;
-            entity.Difficulty  = request.Difficulty;
+            entity.Difficulty = request.Difficulty;
             entity.Comments = request.Comments;
 
             var iditem = this._gameMetricDomainRepository.CreateMetric(entity);
@@ -34,7 +35,8 @@ namespace ARAppBackend
             return response;
         }
 
-        public bool DeleteGameMetricById(int id) {
+        public bool DeleteGameMetricById(int id)
+        {
 
             var entity = this._gameMetricDomainRepository.GetMetricById(id);
             if (entity == null)
@@ -45,7 +47,8 @@ namespace ARAppBackend
             return true;
 
         }
-        public GetGameMetricResponse GetGameMetricById(int id) {
+        public GetGameMetricResponse GetGameMetricById(int id)
+        {
 
             var response = new GetGameMetricResponse();
             var entity = this._gameMetricDomainRepository.GetMetricById(id);
@@ -72,12 +75,14 @@ namespace ARAppBackend
             return response;
         }
 
-        public List<GetGameMetricResponse> GetAllGameMetrics() { 
-        
+        public List<GetGameMetricResponse> GetAllGameMetrics()
+        {
+
             var responseLs = new List<GetGameMetricResponse>();
             var metricLs = this._gameMetricDomainRepository.GetAllMetrics();
 
-            foreach (var item in metricLs) { 
+            foreach (var item in metricLs)
+            {
 
                 var metric = new GetGameMetricResponse();
                 metric.Id = item.Id;
@@ -99,8 +104,9 @@ namespace ARAppBackend
             return responseLs;
         }
 
-        public GetGameMetricResponse EditGameMetricInfo(UpdateGameMetricRequest request) { 
-        
+        public GetGameMetricResponse EditGameMetricInfo(UpdateGameMetricRequest request)
+        {
+
             var response = new GetGameMetricResponse();
 
             var entity = this._gameMetricDomainRepository.GetMetricById(request.Id);
@@ -139,6 +145,69 @@ namespace ARAppBackend
 
             return response;
 
+        }
+
+        public List<RatioSuccessFailResponse> RatioSuccessFailReportByClassId(int classId)
+        {
+
+            var response = new List<RatioSuccessFailResponse>();
+
+            var query = this._gameMetricDomainRepository.GetMetricsByClassId(classId);
+
+            var q2 = query.GroupBy(x => x.UserId).Select(x => new
+            {
+
+                Username = this._userDomainRepository.GetUserById(x.Select(z => z.UserId).FirstOrDefault()).Firstname,
+                Succes = (int)x.Sum(z => z.SuccessCount),
+                Fails = (int)x.Sum(z => z.FailureCount),
+                totalTries = (int)x.Sum(z => z.SuccessCount) + (int)x.Sum(z => z.FailureCount),
+                ratioSuccessFail = ((int)x.Sum(z => z.SuccessCount) + (int)x.Sum(z => z.FailureCount)) > 0 ? (int)Math.Round((double)((int)x.Sum(z => z.SuccessCount)) / ((int)x.Sum(z => z.SuccessCount) + (int)x.Sum(z => z.FailureCount)) * 100) : 0
+
+            }).ToList();
+
+            foreach (var ratio in q2)
+            {
+
+                RatioSuccessFailResponse dto = new RatioSuccessFailResponse();
+                dto.Name = ratio.Username;
+                dto.Value = ratio.ratioSuccessFail;
+                response.Add(dto);
+
+            }
+
+            return response;
+        }
+
+        public List<RatioSuccessFailResponse> RatioSuccessFailReportByUserId(int userId)
+        {
+
+
+            var response = new List<RatioSuccessFailResponse>();
+
+            var query = this._gameMetricDomainRepository.GetMetricsByUserId(userId);
+
+            var q2 = query.GroupBy(x => x.UserId).Select(x => new
+            {
+
+                Classname = this._classDomainRepository.GetClassById(x.Select(z => z.ClassId).FirstOrDefault()).ClassName,
+                Succes = (int)x.Sum(z => z.SuccessCount),
+                Fails = (int)x.Sum(z => z.FailureCount),
+                totalTries = (int)x.Sum(z => z.SuccessCount) + (int)x.Sum(z => z.FailureCount),
+                ratioSuccessFail = ((int)x.Sum(z => z.SuccessCount) + (int)x.Sum(z => z.FailureCount)) > 0 ? (int)Math.Round((double)((int)x.Sum(z => z.SuccessCount)) / ((int)x.Sum(z => z.SuccessCount) + (int)x.Sum(z => z.FailureCount)) * 100) : 0
+
+            }).ToList();
+
+            foreach (var ratio in q2)
+            {
+
+                RatioSuccessFailResponse dto = new RatioSuccessFailResponse();
+                dto.Name = ratio.Classname;
+                dto.Value = ratio.ratioSuccessFail;
+                response.Add(dto);
+
+            }
+
+            return response;
         }
     }
 }

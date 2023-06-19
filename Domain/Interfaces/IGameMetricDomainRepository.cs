@@ -15,5 +15,7 @@ namespace Domain.Interfaces.Generics
         void UpdateMetricInfo(GameMetricEntity metric);
         GameMetricEntity GetMetricById(int id);
         List<GameMetricEntity> GetAllMetrics();
+        List<GameMetricEntity> GetMetricsByClassId(int classId);
+        List<GameMetricEntity> GetMetricsByUserId(int userId);
     }
 }
