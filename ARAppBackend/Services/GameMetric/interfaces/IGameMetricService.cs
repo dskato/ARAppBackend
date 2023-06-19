@@ -9,7 +9,7 @@ namespace ARAppBackend
         GetGameMetricResponse GetGameMetricById(int id);
         List<GetGameMetricResponse> GetAllGameMetrics();
         GetGameMetricResponse EditGameMetricInfo(UpdateGameMetricRequest request);
-        List<RatioSuccessFailResponse> RatioSuccessFailReportByClassId(int classId);
-        List<RatioSuccessFailResponse> RatioSuccessFailReportByUserId(int userId);
+        RatioSuccessFailResponse RatioSuccessFailReportByClassId(int classId);
+        RatioSuccessFailResponse RatioSuccessFailReportByUserId(int userId);
     }
 }

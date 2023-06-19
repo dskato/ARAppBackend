@@ -147,10 +147,10 @@ namespace ARAppBackend
 
         }
 
-        public List<RatioSuccessFailResponse> RatioSuccessFailReportByClassId(int classId)
+        public RatioSuccessFailResponse RatioSuccessFailReportByClassId(int classId)
         {
-
-            var response = new List<RatioSuccessFailResponse>();
+            var response = new RatioSuccessFailResponse();
+            var valLs = new List<ValueRatioSuccessFail>();
 
             var query = this._gameMetricDomainRepository.GetMetricsByClassId(classId);
 
@@ -168,21 +168,24 @@ namespace ARAppBackend
             foreach (var ratio in q2)
             {
 
-                RatioSuccessFailResponse dto = new RatioSuccessFailResponse();
+                ValueRatioSuccessFail dto = new ValueRatioSuccessFail();
                 dto.Name = ratio.Username;
                 dto.Value = ratio.ratioSuccessFail;
-                response.Add(dto);
+                valLs.Add(dto);
 
             }
+            response.Name = this._classDomainRepository.GetClassById(classId).ClassName;
+            response.series = valLs;
 
             return response;
         }
 
-        public List<RatioSuccessFailResponse> RatioSuccessFailReportByUserId(int userId)
+        public RatioSuccessFailResponse RatioSuccessFailReportByUserId(int userId)
         {
 
 
-            var response = new List<RatioSuccessFailResponse>();
+            var response = new RatioSuccessFailResponse();
+            var valLs = new List<ValueRatioSuccessFail>();
 
             var query = this._gameMetricDomainRepository.GetMetricsByUserId(userId);
 
@@ -200,12 +203,15 @@ namespace ARAppBackend
             foreach (var ratio in q2)
             {
 
-                RatioSuccessFailResponse dto = new RatioSuccessFailResponse();
+                ValueRatioSuccessFail dto = new ValueRatioSuccessFail();
                 dto.Name = ratio.Classname;
                 dto.Value = ratio.ratioSuccessFail;
-                response.Add(dto);
+                valLs.Add(dto);
 
             }
+            var user = this._userDomainRepository.GetUserById(userId);
+            response.Name = String.Concat(user.Firstname +" "+ user.Lastname);
+            response.series = valLs;
 
             return response;
         }
