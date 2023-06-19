@@ -87,5 +87,35 @@ namespace ARAppBackend.Controllers
                 return this.BadRequest(exc.Message);
             }
         }
+
+        [HttpGet]
+        [Route("get-rsfbyclassid/{classId}")]
+        public IActionResult RatioSuccessFailReportByClassId(int classId)
+        {
+            try
+            {
+                var response = this._applicationService.RatioSuccessFailReportByClassId(classId);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-rsfbyuserid/{userId}")]
+        public IActionResult RatioSuccessFailReportByUserId(int userId)
+        {
+            try
+            {
+                var response = this._applicationService.RatioSuccessFailReportByUserId(userId);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
     }
 }

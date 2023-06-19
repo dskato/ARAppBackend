@@ -43,5 +43,16 @@ namespace Infrastructure.Data.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public List<GameMetricEntity> GetMetricsByClassId(int classId) {
+
+            var query = this.Context.GameMetricEntity.Where(x => x.ClassId == classId).ToList();
+            return query;
+        }
+
+        public List<GameMetricEntity> GetMetricsByUserId(int userId) {
+            var query = this.Context.GameMetricEntity.Where(x => x.UserId == userId).ToList();
+            return query;
+        }
     }
 }
