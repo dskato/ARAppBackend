@@ -3,6 +3,6 @@
     public class RatioSuccessFailResponse
     {
         public string Name { get; set; }
-        public float Value { get; set; }
+        public List<ValueRatioSuccessFail> series { get; set; } 
     }
 }
