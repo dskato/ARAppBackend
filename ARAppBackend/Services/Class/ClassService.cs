@@ -80,6 +80,36 @@ namespace ARAppBackend
 
         }
 
+        public List<GetClassResponse> GetAllClassesByTextSearch(string textSearch)
+            {
+                List<GetClassResponse> classResponsesLs = new List<GetClassResponse>();
+                var classLs = this._classDomainRepository.GetAllClasses();
+    
+                // Filtering based on textSearch
+                if (!string.IsNullOrEmpty(textSearch))
+                {
+                    classLs = classLs.Where(c =>
+                        c.ClassName.Contains(textSearch, StringComparison.OrdinalIgnoreCase) ||
+                        c.Grade.Contains(textSearch, StringComparison.OrdinalIgnoreCase) ||
+                        c.Code.Contains(textSearch, StringComparison.OrdinalIgnoreCase)
+                    ).ToList();
+                }
+    
+                foreach (var item in classLs)
+                {
+                    GetClassResponse response = new GetClassResponse();
+    
+                    response.Id = item.Id;
+                    response.ClassName = item.ClassName;
+                    response.Grade = item.Grade;
+                    response.Code = item.Code;
+    
+                    classResponsesLs.Add(response);
+                }
+    
+                return classResponsesLs;
+            }
+            
         public GetClassResponse EditClassInfo(UpdateClassRequest request)
         {
 
