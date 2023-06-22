@@ -181,5 +181,20 @@ namespace ARAppBackend.Controllers
                 return this.BadRequest(exc.Message);
             }
         }
+
+        [HttpGet]
+        [Route("get-GetAllUsersByTextSearch/{textSearch}")]
+        public IActionResult GetAllUsersByTextSearch(string textSearch)
+        {
+            try
+            {
+                var response = this._applicationService.GetAllUsersBySearchText(textSearch);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
     }
 }
