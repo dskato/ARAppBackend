@@ -174,6 +174,39 @@ namespace ARAppBackend
 
         }
 
+        public List<GetUserResponse> GetAllUsersBySearchText(string textSearch)
+        {
+            List<GetUserResponse> response = new List<GetUserResponse>();
+            var users = this._userDomainRepository.GetAllUsers();
+
+            // Filtering based on textSearch
+            if (!string.IsNullOrEmpty(textSearch))
+            {
+                users = users.Where(user =>
+                    user.Firstname.Contains(textSearch, StringComparison.OrdinalIgnoreCase) ||
+                    user.Lastname.Contains(textSearch, StringComparison.OrdinalIgnoreCase) ||
+                    user.Email.Contains(textSearch, StringComparison.OrdinalIgnoreCase) ||
+                    user.Role.Contains(textSearch, StringComparison.OrdinalIgnoreCase)
+                ).ToList();
+            }
+
+            foreach (var user in users)
+            {
+                GetUserResponse item = new GetUserResponse();
+                item.Id = user.Id;
+                item.Firstname = user.Firstname;
+                item.Lastname = user.Lastname;
+                item.Email = user.Email;
+                item.Age = user.Age;
+                item.Role = user.Role;
+                item.CreateDate = user.CreateDate;
+                item.Status = user.Status;
+                response.Add(item);
+            }
+
+            return response;
+        }
+
         public string ChangeStatus(int id, bool isUserActive) { 
             return this._userDomainRepository.ChangeStatus(id, isUserActive);
         }
