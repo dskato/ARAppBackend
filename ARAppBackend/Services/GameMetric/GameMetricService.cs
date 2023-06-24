@@ -1,4 +1,4 @@
-﻿using ARAppBackend.DTOs.GameMetric;
+using ARAppBackend.DTOs.GameMetric;
 using Domain.Entities;
 
 namespace ARAppBackend
@@ -147,18 +147,99 @@ namespace ARAppBackend
 
         }
 
-        public RatioSuccessFailResponse RatioSuccessFailReportByClassId(int classId)
+        //1 CLASS
+        //0 USER
+        public RatioSuccessFailResponse ElapsedTimeByClassOrUser(int userOrClass, string difficulty, int userOrClassId) {
+
+            RatioSuccessFailResponse classOrUserRatio = new RatioSuccessFailResponse();
+            List<ValueRatioSuccessFail> ls = new List<ValueRatioSuccessFail>();
+
+            if (userOrClass == 1)
+            {
+                var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
+                classOrUserRatio.Name = GetClassById(userOrClassId).Code;
+                foreach (var i in query)
+                {
+                    ValueRatioSuccessFail value = new ValueRatioSuccessFail();
+                    var currentUser = GetUserById(i.UserId);
+                    value.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                    value.Value = float.Parse(i.TimeElapsed);
+                    ls.Add(value);
+                }
+            }
+            else {
+
+                var query = this._gameMetricDomainRepository.GetMetricsByUserId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
+                var currentUser = GetUserById(userOrClassId);
+                classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                foreach (var i in query)
+                {
+                    ValueRatioSuccessFail value = new ValueRatioSuccessFail();
+                    value.Name = GetClassById(i.ClassId).Code;
+                    value.Value = float.Parse(i.TimeElapsed);
+                    ls.Add(value);
+                }
+
+            }
+            return classOrUserRatio;
+        }
+
+        //1 CLASS
+        //0 USER
+        //1 FAIL
+        //0 SUCCESS
+        public RatioSuccessFailResponse GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, string difficulty, int userOrClassId)
+        {
+
+            RatioSuccessFailResponse classOrUserRatio = new RatioSuccessFailResponse();
+            List<ValueRatioSuccessFail> ls = new List<ValueRatioSuccessFail>();
+
+
+            if (userOrClass == 1)
+            {
+                var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
+                classOrUserRatio.Name = GetClassById(userOrClassId).Code;
+                foreach (var i in query)
+                {
+                    ValueRatioSuccessFail value = new ValueRatioSuccessFail();
+                    var currentUser = GetUserById(i.UserId);
+                    value.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                    value.Value = (failOrSuccess == 1) ? (float)i.FailureCount : (float)i.SuccessCount;
+                    ls.Add(value);
+                }
+
+            }
+            else
+            {
+                var query = this._gameMetricDomainRepository.GetMetricsByUserId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
+                var currentUser = GetUserById(userOrClassId);
+                classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                foreach (var i in query)
+                {
+                    ValueRatioSuccessFail value = new ValueRatioSuccessFail();
+                    value.Name = GetClassById(i.ClassId).Code;
+                    value.Value = (failOrSuccess == 1) ? (float)i.FailureCount : (float)i.SuccessCount;
+                    ls.Add(value);
+                }
+            }
+
+            classOrUserRatio.series = ls;
+
+            return classOrUserRatio;
+        }
+
+        public RatioSuccessFailResponse RatioSuccessFailReportByClassId(int classId, string difficulty)
         {
             var response = new RatioSuccessFailResponse();
             var valLs = new List<ValueRatioSuccessFail>();
 
             var query = this._gameMetricDomainRepository.GetMetricsByClassId(classId);
 
-            var q2 = query.GroupBy(x => x.UserId).Select(x => new
+            var q2 = query.Where(x => x.Difficulty == difficulty).GroupBy(x => x.UserId).Select(x => new
             {
 
                 Username = this._userDomainRepository.GetUserById(x.Select(z => z.UserId).FirstOrDefault()).Firstname,
-                Succes = (int)x.Sum(z => z.SuccessCount),
+                Success = (int)x.Sum(z => z.SuccessCount),
                 Fails = (int)x.Sum(z => z.FailureCount),
                 totalTries = (int)x.Sum(z => z.SuccessCount) + (int)x.Sum(z => z.FailureCount),
                 ratioSuccessFail = ((int)x.Sum(z => z.SuccessCount) + (int)x.Sum(z => z.FailureCount)) > 0 ? (int)Math.Round((double)((int)x.Sum(z => z.SuccessCount)) / ((int)x.Sum(z => z.SuccessCount) + (int)x.Sum(z => z.FailureCount)) * 100) : 0
@@ -180,7 +261,7 @@ namespace ARAppBackend
             return response;
         }
 
-        public RatioSuccessFailResponse RatioSuccessFailReportByUserId(int userId)
+        public RatioSuccessFailResponse RatioSuccessFailReportByUserId(int userId , string difficulty)
         {
 
 
@@ -189,7 +270,7 @@ namespace ARAppBackend
 
             var query = this._gameMetricDomainRepository.GetMetricsByUserId(userId);
 
-            var q2 = query.GroupBy(x => x.UserId).Select(x => new
+            var q2 = query.Where(x => x.Difficulty == difficulty).GroupBy(x => x.UserId).Select(x => new
             {
 
                 Classname = this._classDomainRepository.GetClassById(x.Select(z => z.ClassId).FirstOrDefault()).ClassName,
@@ -210,7 +291,7 @@ namespace ARAppBackend
 
             }
             var user = this._userDomainRepository.GetUserById(userId);
-            response.Name = String.Concat(user.Firstname +" "+ user.Lastname);
+            response.Name = String.Concat(user.Firstname + " " + user.Lastname);
             response.series = valLs;
 
             return response;
