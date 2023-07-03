@@ -1,4 +1,4 @@
-﻿using ARAppBackend.Controllers.bases;
+using ARAppBackend.Controllers.bases;
 using ARAppBackend.DTOs.GameMetric;
 using Microsoft.AspNetCore.Mvc;
 
@@ -89,12 +89,12 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpGet]
-        [Route("get-rsfbyclassid/{classId}")]
-        public IActionResult RatioSuccessFailReportByClassId(int classId)
+        [Route("get-rsfbyclassid/{classId}/{difficulty}")]
+        public IActionResult RatioSuccessFailReportByClassId(int classId, string difficulty)
         {
             try
             {
-                var response = this._applicationService.RatioSuccessFailReportByClassId(classId);
+                var response = this._applicationService.RatioSuccessFailReportByClassId(classId, difficulty);
                 return Success(response);
             }
             catch (Exception exc)
@@ -104,12 +104,42 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpGet]
-        [Route("get-rsfbyuserid/{userId}")]
-        public IActionResult RatioSuccessFailReportByUserId(int userId)
+        [Route("get-rsfbyuserid/{userId}/{difficulty}")]
+        public IActionResult RatioSuccessFailReportByUserId(int userId, string difficulty)
         {
             try
             {
-                var response = this._applicationService.RatioSuccessFailReportByUserId(userId);
+                var response = this._applicationService.RatioSuccessFailReportByUserId(userId, difficulty);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-GetMostFailsOrSuccessByClassOrUser/{userOrClass}/{failOrSuccess}/{difficulty}/{userOrClassId}")]
+        public IActionResult GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, string difficulty, int userOrClassId)
+        {
+            try
+            {
+                var response = this._applicationService.GetMostFailsOrSuccessByClassOrUser(userOrClass, failOrSuccess, difficulty, userOrClassId);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-ElapsedTimeByClassOrUser/{userOrClass}/{difficulty}/{userOrClassId}")]
+        public IActionResult ElapsedTimeByClassOrUser(int userOrClass, string difficulty, int userOrClassId)
+        {
+            try
+            {
+                var response = this._applicationService.ElapsedTimeByClassOrUser(userOrClass, difficulty, userOrClassId);
                 return Success(response);
             }
             catch (Exception exc)

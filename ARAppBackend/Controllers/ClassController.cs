@@ -134,5 +134,20 @@ namespace ARAppBackend.Controllers
             }
         }
 
+         [HttpGet]
+        [Route("get-GetAllClassesByTextSearch/{textSearch}")]
+        public IActionResult GetAllClassesByTextSearch(string textSearch)
+        {
+            try
+            {
+                var response = this._applicationService.GetAllClassesByTextSearch(textSearch);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
     }
 }

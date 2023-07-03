@@ -10,7 +10,7 @@ namespace ARAppBackend
         GetClassResponse GetClassByCode(string code);
         List<GetClassResponse> GetAllClasses();
         GetClassResponse EditClassInfo(UpdateClassRequest request);
-
+        List<GetClassResponse> GetAllClassesByTextSearch(string textSearch);
 
     }
 }

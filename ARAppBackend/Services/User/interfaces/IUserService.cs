@@ -10,6 +10,7 @@ namespace ARAppBackend
         GetUserResponse GetUserByEmail(string email);
         bool DeleteUserById(int id);
         List<GetUserResponse> GetAllUsers();
+        List<GetUserResponse> GetAllUsersBySearchText(string searchText);
         bool UpdateUserById(UpdateUserRequest request);
         string ChangeStatus(int id, bool isUserActive);
     }

@@ -1,4 +1,4 @@
-﻿using ARAppBackend.DTOs.GameMetric;
+using ARAppBackend.DTOs.GameMetric;
 
 namespace ARAppBackend
 {
@@ -9,7 +9,9 @@ namespace ARAppBackend
         GetGameMetricResponse GetGameMetricById(int id);
         List<GetGameMetricResponse> GetAllGameMetrics();
         GetGameMetricResponse EditGameMetricInfo(UpdateGameMetricRequest request);
-        RatioSuccessFailResponse RatioSuccessFailReportByClassId(int classId);
-        RatioSuccessFailResponse RatioSuccessFailReportByUserId(int userId);
+        RatioSuccessFailResponse RatioSuccessFailReportByClassId(int classId, string difficulty);
+        RatioSuccessFailResponse RatioSuccessFailReportByUserId(int userId, string difficulty);
+        RatioSuccessFailResponse GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, string difficulty, int userOrClassId);
+        RatioSuccessFailResponse ElapsedTimeByClassOrUser(int userOrClass, string difficulty, int userOrClassId);
     }
 }
