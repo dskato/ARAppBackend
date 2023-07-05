@@ -2,6 +2,7 @@
 using Domain.Interfaces.Generics;
 using Infrastructure.Data.Context;
 using Infrastructure.Data.Repositories.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Infrastructure.Data.Repositories
 {
@@ -52,5 +53,25 @@ namespace Infrastructure.Data.Repositories
             var entity = this.Context.MClassUserEntity.Where(x => x.UserId == userId).ToList();
             return entity;
         }
+
+        public List<MClassUserEntity> GetAllMCU()
+        {
+            var entity = this.Context.MClassUserEntity.ToList();
+            return entity;
+        }
+
+        public bool UserExistInClass(int userId) { 
+            
+            bool userExists = false;
+            
+            var item = this.Context.MClassUserEntity.Where(x => x.UserId == userId).FirstOrDefault();
+            if(item != null)
+            {
+                userExists = true;
+            }
+            
+            return userExists;
+        }
+
     }
 }

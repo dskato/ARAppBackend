@@ -19,6 +19,10 @@ namespace ARAppBackend
             {
                 throw new Exception("User not found!");
             }
+            if (this._mClassUserDomainRepository.UserExistInClass(userId))
+            {
+                throw new Exception("User already in class!");
+            }
             MClassUserEntity entity = new MClassUserEntity();
             entity.UserId = userId;
             entity.ClassId = classEntity.Id;
@@ -30,15 +34,16 @@ namespace ARAppBackend
             List<GetUserResponse> userDtoLs = new List<GetUserResponse>();
 
             var mClassUser = this._mClassUserDomainRepository.GetUsersByClassId(classId);
-            foreach (var ids in mClassUser) {
-               
+            foreach (var ids in mClassUser)
+            {
+
                 var user = GetUserById(ids.UserId);
-                
+
                 GetUserResponse dto = new GetUserResponse();
                 dto.Id = user.Id;
                 dto.Firstname = user.Firstname;
                 dto.Lastname = user.Lastname;
-                dto.Role  = user.Role;
+                dto.Role = user.Role;
                 dto.Email = user.Email;
                 dto.Age = user.Age;
                 dto.Status = user.Status;
@@ -70,6 +75,12 @@ namespace ARAppBackend
 
 
             return classDtoLs;
+        }
+
+        public List<MClassUserEntity> GetAllMCU()
+        {
+
+            return this._mClassUserDomainRepository.GetAllMCU();
         }
     }
 }

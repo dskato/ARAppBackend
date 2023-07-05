@@ -149,5 +149,20 @@ namespace ARAppBackend.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get-getallmcu")]
+        public IActionResult GetAllMCU()
+        {
+            try
+            {
+                var response = this._applicationService.GetAllMCU();
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
     }
 }

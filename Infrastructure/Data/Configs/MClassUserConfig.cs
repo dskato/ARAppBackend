@@ -16,8 +16,7 @@ namespace Infrastructure.Data.Configs
         public void Configure(EntityTypeBuilder<MClassUserEntity> builder)
         {
             builder.ToTable("m_class_user");
-            builder.HasKey(x => x.UserId);
-            builder.HasKey(x => x.ClassId);
+            builder.HasKey(x => new { x.UserId, x.ClassId }); // Define composite primary key
             builder.HasOne(p => p.User).WithMany(u => u.MClassUsers).HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(p => p.Class).WithMany(u => u.MClassUsers).HasForeignKey(p => p.ClassId).OnDelete(DeleteBehavior.NoAction);
         }
