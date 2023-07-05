@@ -153,7 +153,7 @@ namespace ARAppBackend
         {
             var _random = new Random();
             const string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            int codeLength = _random.Next(1, 5);
+            const int codeLength = 6;
             var codeBuilder = new StringBuilder(codeLength);
 
             for (int i = 0; i < codeLength; i++)
@@ -163,9 +163,12 @@ namespace ARAppBackend
                 codeBuilder.Append(randomChar);
             }
 
+            codeBuilder.Insert(3, '-'); // Insert the hyphen at the 4th position
+
             return codeBuilder.ToString();
         }
+
     }
 
-    
+
 }

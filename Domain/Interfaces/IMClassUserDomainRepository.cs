@@ -15,6 +15,7 @@ namespace Domain.Interfaces.Generics
         void DeleteUserByUserId(int userId);
         List<MClassUserEntity> GetClassesByUserId(int userId);
         List<MClassUserEntity> GetUsersByClassId(int classId);
-
+        List<MClassUserEntity> GetAllMCU();
+        bool UserExistInClass(int userId);
     }
 }
