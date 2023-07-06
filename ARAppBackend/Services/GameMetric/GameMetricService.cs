@@ -206,7 +206,7 @@ namespace ARAppBackend
         //0 USER
         //1 FAIL
         //0 SUCCESS
-        public RatioSuccessFailResponse GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, string difficulty, int userOrClassId)
+        public RatioSuccessFailResponse GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, int gameId,  string difficulty, int userOrClassId)
         {
 
             RatioSuccessFailResponse classOrUserRatio = new RatioSuccessFailResponse();
@@ -215,7 +215,7 @@ namespace ARAppBackend
 
             if (userOrClass == 1)
             {
-                var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
+                var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty && x.GameId == gameId).OrderByDescending(x => x.FailureCount);
                 classOrUserRatio.Name = GetClassById(userOrClassId).Code;
                 foreach (var i in query)
                 {

@@ -119,12 +119,12 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpGet]
-        [Route("get-GetMostFailsOrSuccessByClassOrUser/{userOrClass}/{failOrSuccess}/{difficulty}/{userOrClassId}")]
-        public IActionResult GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, string difficulty, int userOrClassId)
+        [Route("get-GetMostFailsOrSuccessByClassOrUser/{userOrClass}/{failOrSuccess}/{gameId}/{difficulty}/{userOrClassId}")]
+        public IActionResult GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, int gameId, string difficulty, int userOrClassId)
         {
             try
             {
-                var response = this._applicationService.GetMostFailsOrSuccessByClassOrUser(userOrClass, failOrSuccess, difficulty, userOrClassId);
+                var response = this._applicationService.GetMostFailsOrSuccessByClassOrUser(userOrClass, failOrSuccess, gameId, difficulty, userOrClassId);
                 return Success(response);
             }
             catch (Exception exc)
