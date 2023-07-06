@@ -160,11 +160,19 @@ namespace ARAppBackend
                 classOrUserRatio.Name = GetClassById(userOrClassId).Code;
                 foreach (var i in query)
                 {
-                    ValueRatioSuccessFail value = new ValueRatioSuccessFail();
                     var currentUser = GetUserById(i.UserId);
-                    value.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
-                    value.Value = float.Parse(i.TimeElapsed);
-                    ls.Add(value);
+                    string name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                    var existingValue = ls.FirstOrDefault(x => x.Name == name);
+
+                    if (existingValue != null)
+                        existingValue.Value += float.Parse(i.TimeElapsed);
+                    else
+                    {
+                        ValueRatioSuccessFail value = new ValueRatioSuccessFail();
+                        value.Name = name;
+                        value.Value = float.Parse(i.TimeElapsed);
+                        ls.Add(value);
+                    }
                 }
             }
             else {
@@ -174,13 +182,23 @@ namespace ARAppBackend
                 classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
                 foreach (var i in query)
                 {
-                    ValueRatioSuccessFail value = new ValueRatioSuccessFail();
-                    value.Name = GetClassById(i.ClassId).Code;
-                    value.Value = float.Parse(i.TimeElapsed);
-                    ls.Add(value);
+                    string name = GetClassById(i.ClassId).Code;
+                    var existingValue = ls.FirstOrDefault(x => x.Name == name);
+
+                    if (existingValue != null)
+                        existingValue.Value += float.Parse(i.TimeElapsed);
+                    else
+                    {
+                        ValueRatioSuccessFail value = new ValueRatioSuccessFail();
+                        value.Name = name;
+                        value.Value = float.Parse(i.TimeElapsed);
+                        ls.Add(value);
+                    }
                 }
 
             }
+
+            classOrUserRatio.series = ls;
             return classOrUserRatio;
         }
 
@@ -201,11 +219,24 @@ namespace ARAppBackend
                 classOrUserRatio.Name = GetClassById(userOrClassId).Code;
                 foreach (var i in query)
                 {
-                    ValueRatioSuccessFail value = new ValueRatioSuccessFail();
                     var currentUser = GetUserById(i.UserId);
-                    value.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
-                    value.Value = (failOrSuccess == 1) ? (float)i.FailureCount : (float)i.SuccessCount;
-                    ls.Add(value);
+                    string name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                    var existingValue = ls.FirstOrDefault(x => x.Name == name);
+
+                    if (existingValue != null)
+                    {
+                        if (failOrSuccess == 1)
+                            existingValue.Value += (float)i.FailureCount;
+                        else
+                            existingValue.Value += (float)i.SuccessCount;
+                    }
+                    else
+                    {
+                        ValueRatioSuccessFail value = new ValueRatioSuccessFail();
+                        value.Name = name;
+                        value.Value = (failOrSuccess == 1) ? (float)i.FailureCount : (float)i.SuccessCount;
+                        ls.Add(value);
+                    }
                 }
 
             }
@@ -216,10 +247,23 @@ namespace ARAppBackend
                 classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
                 foreach (var i in query)
                 {
-                    ValueRatioSuccessFail value = new ValueRatioSuccessFail();
-                    value.Name = GetClassById(i.ClassId).Code;
-                    value.Value = (failOrSuccess == 1) ? (float)i.FailureCount : (float)i.SuccessCount;
-                    ls.Add(value);
+                    string name = GetClassById(i.ClassId).Code;
+                    var existingValue = ls.FirstOrDefault(x => x.Name == name);
+
+                    if (existingValue != null)
+                    {
+                        if (failOrSuccess == 1)
+                            existingValue.Value += (float)i.FailureCount;
+                        else
+                            existingValue.Value += (float)i.SuccessCount;
+                    }
+                    else
+                    {
+                        ValueRatioSuccessFail value = new ValueRatioSuccessFail();
+                        value.Name = name;
+                        value.Value = (failOrSuccess == 1) ? (float)i.FailureCount : (float)i.SuccessCount;
+                        ls.Add(value);
+                    }
                 }
             }
 
