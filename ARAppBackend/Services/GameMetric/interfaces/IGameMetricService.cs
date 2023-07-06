@@ -11,7 +11,7 @@ namespace ARAppBackend
         GetGameMetricResponse EditGameMetricInfo(UpdateGameMetricRequest request);
         RatioSuccessFailResponse RatioSuccessFailReportByClassId(int classId, string difficulty);
         RatioSuccessFailResponse RatioSuccessFailReportByUserId(int userId, string difficulty);
-        RatioSuccessFailResponse GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, string difficulty, int userOrClassId);
+        RatioSuccessFailResponse GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, int gameId, string difficulty, int userOrClassId);
         RatioSuccessFailResponse ElapsedTimeByClassOrUser(int userOrClass, string difficulty, int userOrClassId);
     }
 }
