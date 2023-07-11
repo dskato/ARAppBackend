@@ -24,8 +24,8 @@ namespace ARAppBackend
             //Token info
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Audience = "ARAppBackend",
-                Issuer = "AuthService",
+                Audience = "https://localhost:7016/",
+                Issuer = "https://localhost:7016/",
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = creds

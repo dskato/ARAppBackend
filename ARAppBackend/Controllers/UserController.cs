@@ -1,10 +1,12 @@
 ﻿using ARAppBackend.Controllers.bases;
 using ARAppBackend.DTOs.RestorePassword;
 using ARAppBackend.DTOs.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ARAppBackend.Controllers
 {
+    [ApiController]
     public class UserController : APIControllerBase
     {
         private readonly IApplicationService _applicationService;
@@ -29,7 +31,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPost]
         [Route("post-updateuser")]
         public IActionResult UpdateUser([FromForm] UpdateUserRequest request)
@@ -46,6 +48,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         [Route("post-changestatus")]
         public IActionResult ChangeStatus([FromForm] int userId,[FromForm] bool isUserActive )
@@ -61,6 +64,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("post-login")]
         public IActionResult LogIn([FromForm] string email, [FromForm] string password)
@@ -76,6 +80,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("delete-deleteuser")]
         public IActionResult DeleteUser([FromForm] int id)
@@ -91,6 +96,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("get-getuserbyid/{id}")]
         public IActionResult GetUserById(int id)
@@ -106,6 +112,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("get-getuserbyemail/{email}")]
         public IActionResult GetUserByEmail( string email)
@@ -122,6 +129,7 @@ namespace ARAppBackend.Controllers
         }
 
 
+        [Authorize]
         [HttpGet]
         [Route("get-getallusers")]
         public IActionResult GetAllUsers()
@@ -182,6 +190,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("get-GetAllUsersByTextSearch/{textSearch}")]
         public IActionResult GetAllUsersByTextSearch(string textSearch)
