@@ -14,7 +14,6 @@ namespace ARAppBackend.Controllers
             this._applicationService = applicationService;
         }
 
-        [Authorize]
         [HttpPost]
         [Route("post-creategame")]
         public IActionResult CreateGame([FromForm] CreateGameRequest request)
@@ -30,7 +29,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpDelete]
         [Route("delete-deletegame")]
         public IActionResult DeleteGame([FromForm] int id)
@@ -46,7 +44,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getgamebyid/{id}")]
         public IActionResult GetGameById(int id)
@@ -62,7 +59,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getallgames")]
         public IActionResult GetAllGames()
@@ -78,7 +74,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpPut]
         [Route("put-editgameinfo")]
         public IActionResult EditGameInfo(UpdateGameRequest request)

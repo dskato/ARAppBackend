@@ -14,7 +14,6 @@ namespace ARAppBackend.Controllers
             this._applicationService = applicationService;
         }
 
-        [Authorize]
         [HttpPost]
         [Route("post-adduserinclass")]
         public IActionResult AddUserInClass([FromForm] int userId, [FromForm] string classCode)
@@ -30,7 +29,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         [Route("post-createclass")]
         public IActionResult CreateClass([FromForm] CreateClassRequest request)
@@ -46,7 +44,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
+        
         [HttpDelete]
         [Route("delete-deleteclass")]
         public IActionResult DeleteClass([FromForm] int id)
@@ -62,7 +60,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getclassbyid/{id}")]
         public IActionResult GetClassById(int id)
@@ -78,7 +75,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getallclasess")]
         public IActionResult GetAllClasses()
@@ -94,7 +90,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpPut]
         [Route("put-editclassinfo")]
         public IActionResult EditClassInfo(UpdateClassRequest request)
@@ -110,7 +105,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getusersinclass/{classId}")]
         public IActionResult GetUsersInClassByClassId(int classId)
@@ -126,7 +120,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getclassesofuser/{userId}")]
         public IActionResult GetClassesOfUserByUserId(int userId)
@@ -142,7 +135,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-GetAllClassesByTextSearch/{textSearch}")]
         public IActionResult GetAllClassesByTextSearch(string textSearch)
@@ -158,7 +150,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getallmcu")]
         public IActionResult GetAllMCU()

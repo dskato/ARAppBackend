@@ -14,7 +14,6 @@ namespace ARAppBackend.Controllers
             this._applicationService = applicationService;
         }
 
-        [Authorize]
         [HttpPost]
         [Route("post-creategamemetric")]
         public IActionResult CreateGameMetric([FromForm] CreateGameMetricRequest request)
@@ -30,7 +29,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpDelete]
         [Route("delete-deletegamemetric")]
         public IActionResult DeleteGameMetric([FromForm] int id)
@@ -46,7 +44,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getgamemetricbyid/{id}")]
         public IActionResult GetGameMetricById(int id)
@@ -62,7 +59,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getallgamesmetrics")]
         public IActionResult GetAllGamesMetrics()
@@ -78,7 +74,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpPut]
         [Route("put-editgamemetricinfo")]
         public IActionResult EditGameInfo(UpdateGameMetricRequest request)
@@ -94,7 +89,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-rsfbyclassid/{classId}/{difficulty}")]
         public IActionResult RatioSuccessFailReportByClassId(int classId, string difficulty)
@@ -110,7 +104,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-rsfbyuserid/{userId}/{difficulty}")]
         public IActionResult RatioSuccessFailReportByUserId(int userId, string difficulty)
@@ -126,7 +119,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-GetMostFailsOrSuccessByClassOrUser/{userOrClass}/{failOrSuccess}/{gameId}/{difficulty}/{userOrClassId}")]
         public IActionResult GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, int gameId, string difficulty, int userOrClassId)
@@ -142,7 +134,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-ElapsedTimeByClassOrUser/{userOrClass}/{difficulty}/{userOrClassId}")]
         public IActionResult ElapsedTimeByClassOrUser(int userOrClass, string difficulty, int userOrClassId)
@@ -158,7 +149,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-GeneralRanking/{userOrClass}/{gameId}/{difficulty}/{userOrClassId}")]
         public IActionResult GeneralRanking(int userOrClass, int gameId, string difficulty, int userOrClassId)

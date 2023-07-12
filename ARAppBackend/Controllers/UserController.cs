@@ -31,7 +31,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         [Route("post-updateuser")]
         public IActionResult UpdateUser([FromForm] UpdateUserRequest request)
@@ -48,7 +47,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         [Route("post-changestatus")]
         public IActionResult ChangeStatus([FromForm] int userId,[FromForm] bool isUserActive )
@@ -80,7 +78,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpDelete]
         [Route("delete-deleteuser")]
         public IActionResult DeleteUser([FromForm] int id)
@@ -96,7 +93,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getuserbyid/{id}")]
         public IActionResult GetUserById(int id)
@@ -112,7 +108,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-getuserbyemail/{email}")]
         public IActionResult GetUserByEmail( string email)
@@ -129,7 +124,6 @@ namespace ARAppBackend.Controllers
         }
 
 
-        [Authorize]
         [HttpGet]
         [Route("get-getallusers")]
         public IActionResult GetAllUsers()
@@ -190,7 +184,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("get-GetAllUsersByTextSearch/{textSearch}")]
         public IActionResult GetAllUsersByTextSearch(string textSearch)
