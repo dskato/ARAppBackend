@@ -1,5 +1,6 @@
 ﻿using ARAppBackend.Controllers.bases;
 using ARAppBackend.DTOs.Class;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ARAppBackend.Controllers
@@ -28,7 +29,6 @@ namespace ARAppBackend.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("post-createclass")]
         public IActionResult CreateClass([FromForm] CreateClassRequest request)
@@ -44,6 +44,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
+        
         [HttpDelete]
         [Route("delete-deleteclass")]
         public IActionResult DeleteClass([FromForm] int id)
@@ -134,7 +135,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
-         [HttpGet]
+        [HttpGet]
         [Route("get-GetAllClassesByTextSearch/{textSearch}")]
         public IActionResult GetAllClassesByTextSearch(string textSearch)
         {

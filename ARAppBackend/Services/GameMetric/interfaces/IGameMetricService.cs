@@ -13,5 +13,6 @@ namespace ARAppBackend
         RatioSuccessFailResponse RatioSuccessFailReportByUserId(int userId, string difficulty);
         RatioSuccessFailResponse GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, int gameId, string difficulty, int userOrClassId);
         RatioSuccessFailResponse ElapsedTimeByClassOrUser(int userOrClass, string difficulty, int userOrClassId);
+        RatioSuccessFailResponse GeneralRanking(int userOrClass, int gameId, string difficulty, int userOrClassId);
     }
 }

@@ -149,7 +149,8 @@ namespace ARAppBackend
 
         //1 CLASS
         //0 USER
-        public RatioSuccessFailResponse ElapsedTimeByClassOrUser(int userOrClass, string difficulty, int userOrClassId) {
+        public RatioSuccessFailResponse ElapsedTimeByClassOrUser(int userOrClass, string difficulty, int userOrClassId)
+        {
 
             RatioSuccessFailResponse classOrUserRatio = new RatioSuccessFailResponse();
             List<ValueRatioSuccessFail> ls = new List<ValueRatioSuccessFail>();
@@ -175,7 +176,8 @@ namespace ARAppBackend
                     }
                 }
             }
-            else {
+            else
+            {
 
                 var query = this._gameMetricDomainRepository.GetMetricsByUserId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
                 var currentUser = GetUserById(userOrClassId);
@@ -206,7 +208,7 @@ namespace ARAppBackend
         //0 USER
         //1 FAIL
         //0 SUCCESS
-        public RatioSuccessFailResponse GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, int gameId,  string difficulty, int userOrClassId)
+        public RatioSuccessFailResponse GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, int gameId, string difficulty, int userOrClassId)
         {
 
             RatioSuccessFailResponse classOrUserRatio = new RatioSuccessFailResponse();
@@ -305,7 +307,7 @@ namespace ARAppBackend
             return response;
         }
 
-        public RatioSuccessFailResponse RatioSuccessFailReportByUserId(int userId , string difficulty)
+        public RatioSuccessFailResponse RatioSuccessFailReportByUserId(int userId, string difficulty)
         {
 
 
@@ -340,5 +342,79 @@ namespace ARAppBackend
 
             return response;
         }
+
+        //1 CLASS
+        //0 USER
+        public RatioSuccessFailResponse GeneralRanking(int userOrClass, int gameId, string difficulty, int userOrClassId)
+        {
+            RatioSuccessFailResponse generalRanking = new RatioSuccessFailResponse();
+            List<ValueRatioSuccessFail> ls = new List<ValueRatioSuccessFail>();
+
+            Dictionary<string, double> userScores = new Dictionary<string, double>();
+
+            if (userOrClass == 1)
+            {
+                var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty && x.GameId == gameId).OrderByDescending(x => x.FailureCount);
+
+                generalRanking.Name = GetClassById(userOrClassId).Code;
+
+                foreach (var metric in query)
+                {
+                    var currentUser = GetUserById(metric.UserId);
+                    string name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+
+                    if (userScores.ContainsKey(name))
+                    {
+                        userScores[name] += GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                    }
+                    else
+                    {
+                        userScores[name] = GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                    }
+                }
+            }
+            else
+            {
+                var query = this._gameMetricDomainRepository.GetMetricsByUserId(userOrClassId).Where(x => x.Difficulty == difficulty && x.GameId == gameId).OrderByDescending(x => x.FailureCount);
+
+                var currentUser = GetUserById(userOrClassId);
+                generalRanking.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+
+                foreach (var metric in query)
+                {
+                    string name = GetClassById(metric.ClassId).Code;
+
+                    if (userScores.ContainsKey(name))
+                    {
+                        userScores[name] += GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                    }
+                    else
+                    {
+                        userScores[name] = GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                    }
+                }
+            }
+
+            foreach (var entry in userScores)
+            {
+                ValueRatioSuccessFail value = new ValueRatioSuccessFail();
+                value.Name = entry.Key;
+                value.Value = (float)entry.Value;
+                ls.Add(value);
+            }
+
+            generalRanking.series = ls;
+            return generalRanking;
+        }
+
+
+        private double GenerateRanking(double score, int timeElapsed, int success, int fails)
+        {
+            double timeWeight = timeElapsed != 0 ? (0.3 * (1.0 / timeElapsed)) : 0.0;
+            double failsWeight = fails != 0 ? (0.1 * (1.0 / fails)) : 0.0;
+
+            return ((0.4 * score) + timeWeight + (0.2 * success) + failsWeight);
+        }
     }
+
 }

@@ -1,6 +1,8 @@
 ﻿using Azure;
 using Azure.Communication.Email;
 using Azure.Identity;
+using System.Net.Mail;
+using System.Net;
 
 namespace ARAppBackend
 {
@@ -10,8 +12,35 @@ namespace ARAppBackend
         
         public async Task<string> SendPasswordRecoveryEmailAsync(string email) {
 
+            string resetCode = GenerateRandomCode(6);
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
 
+                Port = 587,
+                Credentials = new NetworkCredential("dskato0603@gmail.com", "tdmjfibhwoclozfq"),
+                UseDefaultCredentials = false,
+                EnableSsl = true,
 
+            };
+
+            var code = $"<p>Tu codigo de restablecimiento es: {resetCode}</p>";
+            var htmlContent = "<html><body><h1>Restablecer Contraseña</h1><br/><h4>Use el siguiente codigo para restablecer la contraseña</h4>" + code + "</body></html>";
+
+            var mailMessage = new MailMessage
+
+            {
+
+                From = new MailAddress("dskato0603@gmail.com"),
+                Subject = "Restablecer Contraseña",
+                Body = htmlContent,
+                IsBodyHtml = true,
+
+            };
+
+            mailMessage.To.Add(email);
+
+            smtpClient.Send(mailMessage);
+            /*
             string resetCode = GenerateRandomCode(6);
             var comConenctionString = _configuration["ConnectionStrings:CommunicationConnection"];
             EmailClient emailClient = new EmailClient(comConenctionString);
@@ -43,7 +72,7 @@ namespace ARAppBackend
                 Console.WriteLine($"Email send operation failed with error code: {ex.ErrorCode}, message: {ex.Message}");
                 resetCode = null;
             }
-
+            */
 
             return resetCode;
         }

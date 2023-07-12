@@ -1,10 +1,12 @@
 ﻿using ARAppBackend.Controllers.bases;
 using ARAppBackend.DTOs.RestorePassword;
 using ARAppBackend.DTOs.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ARAppBackend.Controllers
 {
+    [ApiController]
     public class UserController : APIControllerBase
     {
         private readonly IApplicationService _applicationService;
@@ -28,7 +30,6 @@ namespace ARAppBackend.Controllers
                 return this.BadRequest(exc.Message);
             }
         }
-
 
         [HttpPost]
         [Route("post-updateuser")]
@@ -61,6 +62,7 @@ namespace ARAppBackend.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("post-login")]
         public IActionResult LogIn([FromForm] string email, [FromForm] string password)

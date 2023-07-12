@@ -1,12 +1,16 @@
 ﻿using Infrastructure.Data.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ARAppBackend.Extensions.Servers
 {
     public class ServerExtension
     {
 
-        public static void ConfigureSQLServices(WebApplicationBuilder builder)
+        public static void ConfigureSQLServices(WebApplicationBuilder builder, IConfiguration _configuration)
         {
             builder.Services.AddDbContext<AppDbContext>(
                 options =>
@@ -19,6 +23,7 @@ namespace ARAppBackend.Extensions.Servers
                     });
                 }, ServiceLifetime.Transient);
 
+            
 
         }
 
