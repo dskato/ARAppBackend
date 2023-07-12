@@ -1,5 +1,6 @@
 using ARAppBackend.Controllers.bases;
 using ARAppBackend.DTOs.GameMetric;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ARAppBackend.Controllers
@@ -140,6 +141,21 @@ namespace ARAppBackend.Controllers
             try
             {
                 var response = this._applicationService.ElapsedTimeByClassOrUser(userOrClass, difficulty, userOrClassId);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-GeneralRanking/{userOrClass}/{gameId}/{difficulty}/{userOrClassId}")]
+        public IActionResult GeneralRanking(int userOrClass, int gameId, string difficulty, int userOrClassId)
+        {
+            try
+            {
+                var response = this._applicationService.GeneralRanking(userOrClass, gameId, difficulty, userOrClassId);
                 return Success(response);
             }
             catch (Exception exc)

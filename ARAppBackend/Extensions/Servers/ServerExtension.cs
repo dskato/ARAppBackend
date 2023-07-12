@@ -1,5 +1,9 @@
 ﻿using Infrastructure.Data.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ARAppBackend.Extensions.Servers
 {
@@ -19,6 +23,7 @@ namespace ARAppBackend.Extensions.Servers
                     });
                 }, ServiceLifetime.Transient);
 
+            
 
         }
 
