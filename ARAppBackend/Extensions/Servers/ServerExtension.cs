@@ -10,7 +10,7 @@ namespace ARAppBackend.Extensions.Servers
     public class ServerExtension
     {
 
-        public static void ConfigureSQLServices(WebApplicationBuilder builder, IConfiguration _configuration)
+        public static void ConfigureSQLServices(WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<AppDbContext>(
                 options =>

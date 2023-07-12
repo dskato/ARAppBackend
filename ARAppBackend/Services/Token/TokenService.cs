@@ -17,7 +17,9 @@ namespace ARAppBackend
             //Claims headers
             var claims = new List<Claim>{
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.NameId, user.Firstname + "_" + user.Lastname)
+                new Claim(JwtRegisteredClaimNames.NameId, user.Firstname + "_" + user.Lastname),
+                new Claim("role", user.Role)
+
             };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

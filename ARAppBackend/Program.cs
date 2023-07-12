@@ -1,52 +1,61 @@
 using ARAppBackend.Extensions.Injections;
 using ARAppBackend.Extensions.Migrations;
 using ARAppBackend.Extensions.Servers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-IConfiguration configuration = new ConfigurationBuilder()
-    .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
-    .Build();
 
+
+builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+{
+    builder
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+}));
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+IConfiguration configuration = new ConfigurationBuilder()
+                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+                            .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: false)
+                            .Build();
+
+builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 });
-builder.Services.AddMemoryCache();
-var _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["AppSettings:Token"]));
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://localhost:7016/",
-            ValidAudience = "https://localhost:7016/",
-            IssuerSigningKey = _key
-        };
-    });
-ServerExtension.ConfigureSQLServices(builder, configuration);
+
+
+
+ServerExtension.ConfigureSQLServices(builder);
 DependencyInjectionExtension.ConfigureDependenciesInjectionsServices(builder, configuration);
+builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 
 var app = builder.Build();
-app.UseSwagger();
-app.UseSwaggerUI();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseCors("corsapp");
+}
 app.UseHttpsRedirection();
-app.UseRouting();
-app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors("CorsPolicy");
 app.MigrateDatabase();
+
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+
+});
 
 app.Run();

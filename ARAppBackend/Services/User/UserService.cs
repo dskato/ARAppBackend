@@ -164,7 +164,8 @@ namespace ARAppBackend
                 item.Email = user.Email;
                 item.Age = user.Age;
                 item.Role = user.Role;
-                item.CreateDate = user.CreateDate;
+                item.CreateDate = user.CreateDate.ToString("dd/MM/yyyy"); ;
+
                 item.Status = user.Status;
                 response.Add(item);
 
@@ -199,7 +200,7 @@ namespace ARAppBackend
                 item.Email = user.Email;
                 item.Age = user.Age;
                 item.Role = user.Role;
-                item.CreateDate = user.CreateDate;
+                item.CreateDate = user.CreateDate.ToString("dd/MM/yyyy");
                 item.Status = user.Status;
                 response.Add(item);
             }
