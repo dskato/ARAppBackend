@@ -19,13 +19,18 @@ namespace ARAppBackend
             {
                 throw new Exception("User not found!");
             }
-            if (this._mClassUserDomainRepository.UserExistInClass(userId))
+            if (userEntity.Role == "STUDENT")
             {
-                throw new Exception("User already in class!");
+                if (this._mClassUserDomainRepository.UserExistInClass(userId))
+                {
+                    throw new Exception("User already in class!");
+                }
             }
+
             MClassUserEntity entity = new MClassUserEntity();
             entity.UserId = userId;
             entity.ClassId = classEntity.Id;
+            entity.CreateDate = DateTime.Now;
             this._mClassUserDomainRepository.AddSync(entity);
 
         }

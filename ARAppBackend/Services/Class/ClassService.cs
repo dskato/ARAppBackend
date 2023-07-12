@@ -16,6 +16,7 @@ namespace ARAppBackend
             classEntity.ClassName = request.ClassName;
             classEntity.Grade = request.Grade;
             classEntity.Code = code;
+            classEntity.CreateDate = DateTime.Now;
 
             var itemId = this._classDomainRepository.CreateClass(classEntity);
             AddUserInClass(request.UserId, code);
