@@ -158,7 +158,7 @@ namespace ARAppBackend
             if (userOrClass == 1)
             {
                 var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
-                classOrUserRatio.Name = GetClassById(userOrClassId).Code;
+                classOrUserRatio.Name = GetClassById(userOrClassId).Code + " - " + difficulty;
                 foreach (var i in query)
                 {
                     var currentUser = GetUserById(i.UserId);
@@ -181,7 +181,7 @@ namespace ARAppBackend
 
                 var query = this._gameMetricDomainRepository.GetMetricsByUserId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
                 var currentUser = GetUserById(userOrClassId);
-                classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname) + " - " + difficulty;
                 foreach (var i in query)
                 {
                     string name = GetClassById(i.ClassId).Code;
@@ -218,7 +218,7 @@ namespace ARAppBackend
             if (userOrClass == 1)
             {
                 var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty && x.GameId == gameId).OrderByDescending(x => x.FailureCount);
-                classOrUserRatio.Name = GetClassById(userOrClassId).Code;
+                classOrUserRatio.Name = GetClassById(userOrClassId).Code + " - " + difficulty;
                 foreach (var i in query)
                 {
                     var currentUser = GetUserById(i.UserId);
@@ -246,7 +246,7 @@ namespace ARAppBackend
             {
                 var query = this._gameMetricDomainRepository.GetMetricsByUserId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
                 var currentUser = GetUserById(userOrClassId);
-                classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname) + " - " + difficulty;
                 foreach (var i in query)
                 {
                     string name = GetClassById(i.ClassId).Code;
@@ -301,7 +301,7 @@ namespace ARAppBackend
                 valLs.Add(dto);
 
             }
-            response.Name = this._classDomainRepository.GetClassById(classId).ClassName;
+            response.Name = this._classDomainRepository.GetClassById(classId).ClassName + " - " + difficulty;
             response.series = valLs;
 
             return response;
@@ -337,7 +337,7 @@ namespace ARAppBackend
 
             }
             var user = this._userDomainRepository.GetUserById(userId);
-            response.Name = String.Concat(user.Firstname + " " + user.Lastname);
+            response.Name = String.Concat(user.Firstname + " " + user.Lastname) + " - " + difficulty;
             response.series = valLs;
 
             return response;
@@ -356,7 +356,7 @@ namespace ARAppBackend
             {
                 var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty && x.GameId == gameId).OrderByDescending(x => x.FailureCount);
 
-                generalRanking.Name = GetClassById(userOrClassId).Code;
+                generalRanking.Name = GetClassById(userOrClassId).Code + " - " + difficulty;
 
                 foreach (var metric in query)
                 {
@@ -365,11 +365,11 @@ namespace ARAppBackend
 
                     if (userScores.ContainsKey(name))
                     {
-                        userScores[name] += GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                        userScores[name] += GenerateRanking(double.Parse(metric.Score), double.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
                     }
                     else
                     {
-                        userScores[name] = GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                        userScores[name] = GenerateRanking(double.Parse(metric.Score), double.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
                     }
                 }
             }
@@ -378,7 +378,7 @@ namespace ARAppBackend
                 var query = this._gameMetricDomainRepository.GetMetricsByUserId(userOrClassId).Where(x => x.Difficulty == difficulty && x.GameId == gameId).OrderByDescending(x => x.FailureCount);
 
                 var currentUser = GetUserById(userOrClassId);
-                generalRanking.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                generalRanking.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname) + " - " + difficulty;
 
                 foreach (var metric in query)
                 {
@@ -386,11 +386,11 @@ namespace ARAppBackend
 
                     if (userScores.ContainsKey(name))
                     {
-                        userScores[name] += GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                        userScores[name] += GenerateRanking(double.Parse(metric.Score), double.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
                     }
                     else
                     {
-                        userScores[name] = GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                        userScores[name] = GenerateRanking(double.Parse(metric.Score), double.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
                     }
                 }
             }
@@ -408,7 +408,7 @@ namespace ARAppBackend
         }
 
 
-        private double GenerateRanking(double score, int timeElapsed, int success, int fails)
+        private double GenerateRanking(double score, double timeElapsed, int success, int fails)
         {
             double timeWeight = timeElapsed != 0 ? (0.3 * (1.0 / timeElapsed)) : 0.0;
             double failsWeight = fails != 0 ? (0.1 * (1.0 / fails)) : 0.0;

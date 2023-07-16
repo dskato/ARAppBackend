@@ -18,7 +18,8 @@ namespace ARAppBackend
             var claims = new List<Claim>{
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.NameId, user.Firstname + "_" + user.Lastname),
-                new Claim("role", user.Role)
+                new Claim("role", user.Role),
+                new Claim("uid", user.Id.ToString())
 
             };
 

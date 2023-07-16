@@ -24,7 +24,7 @@ namespace ARAppBackend
             response.Id = itemId;
             response.ClassName = classEntity.ClassName;
             response.Grade = classEntity.Grade;
-            response.Code = code;  
+            response.Code = code;
 
             return response;
 
@@ -81,36 +81,41 @@ namespace ARAppBackend
 
         }
 
-        public List<GetClassResponse> GetAllClassesByTextSearch(string textSearch)
+        public List<GetClassResponse> GetAllClassesByTextSearch(int userId, string textSearch)
+        {
+            List<GetClassResponse> classResponsesLs = new List<GetClassResponse>();
+            var uidClasses = this._mClassUserDomainRepository.GetClassesByUserId(userId);
+            var classLs = this._classDomainRepository.GetAllClasses();
+            classLs = (from cls in classLs
+                       join uidCls in uidClasses on cls.Id equals uidCls.ClassId
+                       select cls).ToList();
+
+            // Filtering based on textSearch
+            if (!string.IsNullOrEmpty(textSearch))
             {
-                List<GetClassResponse> classResponsesLs = new List<GetClassResponse>();
-                var classLs = this._classDomainRepository.GetAllClasses();
-    
-                // Filtering based on textSearch
-                if (!string.IsNullOrEmpty(textSearch))
-                {
-                    classLs = classLs.Where(c =>
-                        c.ClassName.Contains(textSearch, StringComparison.OrdinalIgnoreCase) ||
-                        c.Grade.Contains(textSearch, StringComparison.OrdinalIgnoreCase) ||
-                        c.Code.Contains(textSearch, StringComparison.OrdinalIgnoreCase)
-                    ).ToList();
-                }
-    
-                foreach (var item in classLs)
-                {
-                    GetClassResponse response = new GetClassResponse();
-    
-                    response.Id = item.Id;
-                    response.ClassName = item.ClassName;
-                    response.Grade = item.Grade;
-                    response.Code = item.Code;
-    
-                    classResponsesLs.Add(response);
-                }
-    
-                return classResponsesLs;
+                classLs = classLs.Where(c => (
+                    c.ClassName.Contains(textSearch, StringComparison.OrdinalIgnoreCase) ||
+                    c.Grade.Contains(textSearch, StringComparison.OrdinalIgnoreCase) ||
+                    c.Code.Contains(textSearch, StringComparison.OrdinalIgnoreCase))
+
+                ).ToList();
             }
-            
+
+            foreach (var item in classLs)
+            {
+                GetClassResponse response = new GetClassResponse();
+
+                response.Id = item.Id;
+                response.ClassName = item.ClassName;
+                response.Grade = item.Grade;
+                response.Code = item.Code;
+
+                classResponsesLs.Add(response);
+            }
+
+            return classResponsesLs;
+        }
+
         public GetClassResponse EditClassInfo(UpdateClassRequest request)
         {
 
@@ -133,7 +138,8 @@ namespace ARAppBackend
             return response;
         }
 
-        public GetClassResponse GetClassByCode(string code) {
+        public GetClassResponse GetClassByCode(string code)
+        {
             var classEntity = this._classDomainRepository.GetClassByCode(code);
             if (classEntity == null)
             {
