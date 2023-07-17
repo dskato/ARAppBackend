@@ -175,10 +175,26 @@ namespace ARAppBackend
 
         }
 
-        public List<GetUserResponse> GetAllUsersBySearchText(string textSearch)
+        public List<GetUserResponse> GetAllUsersBySearchText(int userId, string textSearch)
         {
             List<GetUserResponse> response = new List<GetUserResponse>();
-            var users = this._userDomainRepository.GetAllUsers();
+            var teacherClassesIds = this._mClassUserDomainRepository
+                .GetClassesByUserId(userId)
+                .Where(x => x.UserId == userId)
+                .Select(x => x.ClassId)
+                .Distinct()
+                .ToList();
+
+            List<int> userIds = new List<int>();
+            foreach (var tc in teacherClassesIds)
+            {
+                var uids = this._mClassUserDomainRepository.GetUsersByClassId(tc).Select(x => x.UserId).Distinct().ToList();
+                userIds.AddRange(uids);
+            }
+            userIds = userIds.Distinct().ToList();
+            userIds.Remove(userId);
+            var users = this._userDomainRepository.GetAllUsers().Where(x => userIds.Contains(x.Id)).ToList();
+
 
             // Filtering based on textSearch
             if (!string.IsNullOrEmpty(textSearch))

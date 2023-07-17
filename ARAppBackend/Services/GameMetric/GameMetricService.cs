@@ -158,7 +158,7 @@ namespace ARAppBackend
             if (userOrClass == 1)
             {
                 var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
-                classOrUserRatio.Name = GetClassById(userOrClassId).Code;
+                classOrUserRatio.Name = GetClassById(userOrClassId).Code + " - " + difficulty;
                 foreach (var i in query)
                 {
                     var currentUser = GetUserById(i.UserId);
@@ -181,7 +181,7 @@ namespace ARAppBackend
 
                 var query = this._gameMetricDomainRepository.GetMetricsByUserId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
                 var currentUser = GetUserById(userOrClassId);
-                classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname) + " - " + difficulty;
                 foreach (var i in query)
                 {
                     string name = GetClassById(i.ClassId).Code;
@@ -218,7 +218,7 @@ namespace ARAppBackend
             if (userOrClass == 1)
             {
                 var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty && x.GameId == gameId).OrderByDescending(x => x.FailureCount);
-                classOrUserRatio.Name = GetClassById(userOrClassId).Code;
+                classOrUserRatio.Name = GetClassById(userOrClassId).Code + " - " + difficulty;
                 foreach (var i in query)
                 {
                     var currentUser = GetUserById(i.UserId);
@@ -246,7 +246,7 @@ namespace ARAppBackend
             {
                 var query = this._gameMetricDomainRepository.GetMetricsByUserId(userOrClassId).Where(x => x.Difficulty == difficulty).OrderByDescending(x => x.FailureCount);
                 var currentUser = GetUserById(userOrClassId);
-                classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                classOrUserRatio.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname) + " - " + difficulty;
                 foreach (var i in query)
                 {
                     string name = GetClassById(i.ClassId).Code;
@@ -301,7 +301,7 @@ namespace ARAppBackend
                 valLs.Add(dto);
 
             }
-            response.Name = this._classDomainRepository.GetClassById(classId).ClassName;
+            response.Name = this._classDomainRepository.GetClassById(classId).ClassName + " - " + difficulty;
             response.series = valLs;
 
             return response;
@@ -337,7 +337,7 @@ namespace ARAppBackend
 
             }
             var user = this._userDomainRepository.GetUserById(userId);
-            response.Name = String.Concat(user.Firstname + " " + user.Lastname);
+            response.Name = String.Concat(user.Firstname + " " + user.Lastname) + " - " + difficulty;
             response.series = valLs;
 
             return response;
@@ -356,7 +356,7 @@ namespace ARAppBackend
             {
                 var query = this._gameMetricDomainRepository.GetMetricsByClassId(userOrClassId).Where(x => x.Difficulty == difficulty && x.GameId == gameId).OrderByDescending(x => x.FailureCount);
 
-                generalRanking.Name = GetClassById(userOrClassId).Code;
+                generalRanking.Name = GetClassById(userOrClassId).Code + " - " + difficulty;
 
                 foreach (var metric in query)
                 {
@@ -365,11 +365,11 @@ namespace ARAppBackend
 
                     if (userScores.ContainsKey(name))
                     {
-                        userScores[name] += GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                        userScores[name] += GenerateRanking(double.Parse(metric.Score), double.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
                     }
                     else
                     {
-                        userScores[name] = GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                        userScores[name] = GenerateRanking(double.Parse(metric.Score), double.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
                     }
                 }
             }
@@ -378,7 +378,7 @@ namespace ARAppBackend
                 var query = this._gameMetricDomainRepository.GetMetricsByUserId(userOrClassId).Where(x => x.Difficulty == difficulty && x.GameId == gameId).OrderByDescending(x => x.FailureCount);
 
                 var currentUser = GetUserById(userOrClassId);
-                generalRanking.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname);
+                generalRanking.Name = string.Concat(currentUser.Firstname, " ", currentUser.Lastname) + " - " + difficulty;
 
                 foreach (var metric in query)
                 {
@@ -386,11 +386,11 @@ namespace ARAppBackend
 
                     if (userScores.ContainsKey(name))
                     {
-                        userScores[name] += GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                        userScores[name] += GenerateRanking(double.Parse(metric.Score), double.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
                     }
                     else
                     {
-                        userScores[name] = GenerateRanking(double.Parse(metric.Score), int.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
+                        userScores[name] = GenerateRanking(double.Parse(metric.Score), double.Parse(metric.TimeElapsed), (int)metric.SuccessCount, (int)metric.FailureCount);
                     }
                 }
             }
@@ -407,8 +407,157 @@ namespace ARAppBackend
             return generalRanking;
         }
 
+        public List<ValueRatioSuccessFail> GenerateGeneralInfo(int userId)
+        {
+            List<ValueRatioSuccessFail> lsInfo = new List<ValueRatioSuccessFail>();
+            ValueRatioSuccessFail dto = new ValueRatioSuccessFail();
+            var user = this._userDomainRepository.GetUserById(userId);
+            var userCompleteName = String.Concat(user.Firstname, " ", user.Lastname);
 
-        private double GenerateRanking(double score, int timeElapsed, int success, int fails)
+            //Count active students
+            dto.Name = "Usuarios Activos";
+            dto.Value = this._userDomainRepository.CountActiveStudents();
+            lsInfo.Add(dto);
+
+            //Count all classes created
+            dto = new ValueRatioSuccessFail();
+            dto.Name = "Clases creadas";
+            dto.Value = this._classDomainRepository.GetAllClasses().Count();
+            lsInfo.Add(dto);
+
+            //Count teacher classes created
+            dto = new ValueRatioSuccessFail();
+            dto.Name = String.Concat("Clases creadas por: ", userCompleteName);
+            dto.Value = this._mClassUserDomainRepository.GetClassesByUserId(userId).Count();
+            lsInfo.Add(dto);
+
+            //Count all games created
+            dto = new ValueRatioSuccessFail();
+            dto.Name = "Juegos Activos";
+            dto.Value = this._gameDomainRepository.GetAllGames().Count();
+            lsInfo.Add(dto);
+
+            //Count all the time hours played in teacher clasess
+            dto = new ValueRatioSuccessFail();
+            var teacherClasessIds = this._mClassUserDomainRepository.GetClassesByUserId(userId).Select(x => x.ClassId).Distinct().ToList();
+            var lsPlayedHours = this._gameMetricDomainRepository.GetAllMetrics().Where(x => teacherClasessIds.Contains(x.ClassId)).Select(y => double.Parse(y.TimeElapsed)).ToList();
+            double totalSeconds = lsPlayedHours.Sum();
+
+            dto.Name = "Horas totales jugadas en sus clases";
+            dto.Value = (float)totalSeconds;
+            lsInfo.Add(dto);
+
+
+            return lsInfo;
+        }
+
+        //1 FAIL
+        //0 SUCCESS
+        public List<ValueRatioSuccessFail> GetTeacherStudentsFailOrSuccessCount(int userId, int failOrSuccess)
+        {
+            List<ValueRatioSuccessFail> valueLs = new List<ValueRatioSuccessFail>();
+
+            var teacherClassesIds = this._mClassUserDomainRepository
+                .GetClassesByUserId(userId)
+                .Where(x => x.UserId == userId)
+                .Select(x => x.ClassId)
+                .Distinct()
+                .ToList();
+
+            List<int> userIds = new List<int>();
+            foreach (var tc in teacherClassesIds)
+            {
+                var uids = this._mClassUserDomainRepository.GetUsersByClassId(tc).Select(x => x.UserId).Distinct().ToList();
+                userIds.AddRange(uids);
+            }
+            userIds = userIds.Distinct().ToList();
+            userIds.Remove(userId);
+
+            foreach (var u in userIds)
+            {
+                ValueRatioSuccessFail valDto = new ValueRatioSuccessFail();
+                var user = this._userDomainRepository.GetUserById(u);
+                valDto.Name = string.Concat(user.Firstname, " ", user.Lastname);
+
+                if (failOrSuccess == 1)
+                {
+                    valDto.Value = this._gameMetricDomainRepository.GetMetricsByUserId(u).Select(x => x.FailureCount).Sum(x => x.Value);
+                }
+                else
+                {
+                    valDto.Value = this._gameMetricDomainRepository.GetMetricsByUserId(u).Select(x => x.SuccessCount).Sum(x => x.Value);
+                }
+                valueLs.Add(valDto);
+            }
+
+            return valueLs;
+        }
+
+        public List<ValueRatioSuccessFail> GetTeacherStudentsGamesPlayedCount(int userId)
+        {
+            List<ValueRatioSuccessFail> valueLs = new List<ValueRatioSuccessFail>();
+
+            var teacherClassesIds = this._mClassUserDomainRepository
+                .GetClassesByUserId(userId)
+                .Where(x => x.UserId == userId)
+                .Select(x => x.ClassId)
+                .Distinct()
+                .ToList();
+
+            List<int> userIds = new List<int>();
+            foreach (var tc in teacherClassesIds)
+            {
+                var uids = this._mClassUserDomainRepository.GetUsersByClassId(tc).Select(x => x.UserId).Distinct().ToList();
+                userIds.AddRange(uids);
+            }
+            userIds = userIds.Distinct().ToList();
+            userIds.Remove(userId);
+
+            foreach (var u in userIds)
+            {
+                ValueRatioSuccessFail valDto = new ValueRatioSuccessFail();
+                var user = this._userDomainRepository.GetUserById(u);
+                valDto.Name = string.Concat(user.Firstname, " ", user.Lastname);
+                valDto.Value = this._gameMetricDomainRepository.GetMetricsByUserId(u).Count();
+                valueLs.Add(valDto);
+            }
+
+            return valueLs;
+        }
+
+        public List<ValueRatioSuccessFail> GetTeacherStudentsGamesScores(int userId)
+        {
+            List<ValueRatioSuccessFail> valueLs = new List<ValueRatioSuccessFail>();
+
+            var teacherClassesIds = this._mClassUserDomainRepository
+                .GetClassesByUserId(userId)
+                .Where(x => x.UserId == userId)
+                .Select(x => x.ClassId)
+                .Distinct()
+                .ToList();
+
+            List<int> userIds = new List<int>();
+            foreach (var tc in teacherClassesIds)
+            {
+                var uids = this._mClassUserDomainRepository.GetUsersByClassId(tc).Select(x => x.UserId).Distinct().ToList();
+                userIds.AddRange(uids);
+            }
+            userIds = userIds.Distinct().ToList();
+            userIds.Remove(userId);
+
+            foreach (var u in userIds)
+            {
+                ValueRatioSuccessFail valDto = new ValueRatioSuccessFail();
+                var user = this._userDomainRepository.GetUserById(u);
+                valDto.Name = string.Concat(user.Firstname, " ", user.Lastname);
+                valDto.Value = this._gameMetricDomainRepository.GetMetricsByUserId(u).Select(x => (x.SuccessCount - x.FailureCount) ).Sum(x => x.Value);
+                valueLs.Add(valDto);
+            }
+
+            return valueLs;
+        }
+
+    private double GenerateRanking(double score, double timeElapsed, int success, int fails)
         {
             double timeWeight = timeElapsed != 0 ? (0.3 * (1.0 / timeElapsed)) : 0.0;
             double failsWeight = fails != 0 ? (0.1 * (1.0 / fails)) : 0.0;

@@ -185,12 +185,12 @@ namespace ARAppBackend.Controllers
         }
 
         [HttpGet]
-        [Route("get-GetAllUsersByTextSearch/{textSearch}")]
-        public IActionResult GetAllUsersByTextSearch(string textSearch)
+        [Route("get-GetAllUsersByTextSearch/{userId}/{textSearch}")]
+        public IActionResult GetAllUsersByTextSearch(int userId, string textSearch)
         {
             try
             {
-                var response = this._applicationService.GetAllUsersBySearchText(textSearch);
+                var response = this._applicationService.GetAllUsersBySearchText(userId, textSearch);
                 return Success(response);
             }
             catch (Exception exc)

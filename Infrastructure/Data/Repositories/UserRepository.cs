@@ -74,5 +74,10 @@ namespace Infrastructure.Data.Repositories
 
             return user.Status;
         }
+
+        public int CountActiveStudents()
+        {
+            return this.Context.UserEntity.Where(x => x.Status == "Active").Count();
+        }
     }
 }
