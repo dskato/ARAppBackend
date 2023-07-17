@@ -14,5 +14,9 @@ namespace ARAppBackend
         RatioSuccessFailResponse GetMostFailsOrSuccessByClassOrUser(int userOrClass, int failOrSuccess, int gameId, string difficulty, int userOrClassId);
         RatioSuccessFailResponse ElapsedTimeByClassOrUser(int userOrClass, string difficulty, int userOrClassId);
         RatioSuccessFailResponse GeneralRanking(int userOrClass, int gameId, string difficulty, int userOrClassId);
+        List<ValueRatioSuccessFail> GenerateGeneralInfo(int userId);
+        List<ValueRatioSuccessFail> GetTeacherStudentsFailOrSuccessCount(int userId, int failOrSuccess);
+        List<ValueRatioSuccessFail> GetTeacherStudentsGamesPlayedCount(int userId);
+        List<ValueRatioSuccessFail> GetTeacherStudentsGamesScores(int userId);
     }
 }

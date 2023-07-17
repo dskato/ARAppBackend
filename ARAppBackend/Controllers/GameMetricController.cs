@@ -163,5 +163,65 @@ namespace ARAppBackend.Controllers
                 return this.BadRequest(exc.Message);
             }
         }
+
+        [HttpGet]
+        [Route("get-GenerateGeneralInfo/{userId}")]
+        public IActionResult GenerateGeneralInfo(int userId)
+        {
+            try
+            {
+                var response = this._applicationService.GenerateGeneralInfo(userId);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-GetTeacherStudentsGamesPlayedCount/{userId}")]
+        public IActionResult GetTeacherStudentsGamesPlayedCount(int userId)
+        {
+            try
+            {
+                var response = this._applicationService.GetTeacherStudentsGamesPlayedCount(userId);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-GetTeacherStudentsGamesScores/{userId}")]
+        public IActionResult GetTeacherStudentsGamesScores(int userId)
+        {
+            try
+            {
+                var response = this._applicationService.GetTeacherStudentsGamesScores(userId);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-GetTeacherStudentsFailOrSuccessCount/{userId}/{failOrSuccess}")]
+        public IActionResult GetTeacherStudentsFailOrSuccessCount(int userId, int failOrSuccess)
+        {
+            try
+            {
+                var response = this._applicationService.GetTeacherStudentsFailOrSuccessCount(userId, failOrSuccess);
+                return Success(response);
+            }
+            catch (Exception exc)
+            {
+                return this.BadRequest(exc.Message);
+            }
+        }
     }
 }

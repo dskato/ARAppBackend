@@ -17,5 +17,6 @@ namespace Domain.Interfaces.Generics
         List<UserEntity> GetAllUsers();
         bool ForgotPassword(string email, byte[] passwordHash, byte[] passwordSalt);
         string ChangeStatus(int id, bool isUserActive);
+        int CountActiveStudents();
     }
 }

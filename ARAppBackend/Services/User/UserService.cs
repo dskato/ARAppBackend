@@ -192,6 +192,7 @@ namespace ARAppBackend
                 userIds.AddRange(uids);
             }
             userIds = userIds.Distinct().ToList();
+            userIds.Remove(userId);
             var users = this._userDomainRepository.GetAllUsers().Where(x => userIds.Contains(x.Id)).ToList();
 
 
