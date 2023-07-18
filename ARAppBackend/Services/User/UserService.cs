@@ -56,7 +56,7 @@ namespace ARAppBackend
             response.Age = user.Age;
             response.Email = user.Email;
             response.Role = user.Role;
-            
+
 
             return response;
         }
@@ -148,12 +148,39 @@ namespace ARAppBackend
 
         }
 
-        public List<GetUserResponse> GetAllUsers()
+        public List<GetUserResponse> GetAllUsers(int userId)
         {
-
+            //First check role
+            var currentUser = this._userDomainRepository.GetUserById(userId);
+            var users = new List<UserEntity>();
             List<GetUserResponse> response = new List<GetUserResponse>();
 
-            var users = this._userDomainRepository.GetAllUsers();
+            if (currentUser.Role == "TEACHER")
+            {
+                var teacherClassesIds = this._mClassUserDomainRepository
+                .GetClassesByUserId(userId)
+                .Where(x => x.UserId == userId)
+                .Select(x => x.ClassId)
+                .Distinct()
+                .ToList();
+
+                List<int> userIds = new List<int>();
+                foreach (var tc in teacherClassesIds)
+                {
+                    var uids = this._mClassUserDomainRepository.GetUsersByClassId(tc).Select(x => x.UserId).Distinct().ToList();
+                    userIds.AddRange(uids);
+                }
+                userIds = userIds.Distinct().ToList();
+                userIds.Remove(userId);
+
+                users = this._userDomainRepository.GetAllUsers().Where(x => userIds.Contains(x.Id)).ToList();
+            }
+            else if (currentUser.Role == "ADMIN")
+            {
+                users = this._userDomainRepository.GetAllUsers().ToList();
+            }
+
+
             foreach (var user in users)
             {
 
@@ -224,7 +251,8 @@ namespace ARAppBackend
             return response;
         }
 
-        public string ChangeStatus(int id, bool isUserActive) { 
+        public string ChangeStatus(int id, bool isUserActive)
+        {
             return this._userDomainRepository.ChangeStatus(id, isUserActive);
         }
 

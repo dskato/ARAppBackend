@@ -125,12 +125,12 @@ namespace ARAppBackend.Controllers
 
 
         [HttpGet]
-        [Route("get-getallusers")]
-        public IActionResult GetAllUsers()
+        [Route("get-getallusers/{userId}")]
+        public IActionResult GetAllUsers(int userId)
         {
             try
             {
-                var response = this._applicationService.GetAllUsers();
+                var response = this._applicationService.GetAllUsers(userId);
                 return Success(response);
             }
             catch (Exception exc)
