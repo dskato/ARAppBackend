@@ -414,9 +414,26 @@ namespace ARAppBackend
             var user = this._userDomainRepository.GetUserById(userId);
             var userCompleteName = String.Concat(user.Firstname, " ", user.Lastname);
 
+            List<ValueRatioSuccessFail> valueLs = new List<ValueRatioSuccessFail>();
+
+            var teacherClassesIds = this._mClassUserDomainRepository
+                .GetClassesByUserId(userId)
+                .Where(x => x.UserId == userId)
+                .Select(x => x.ClassId)
+                .Distinct()
+                .ToList();
+
+            List<int> userIds = new List<int>();
+            foreach (var tc in teacherClassesIds)
+            {
+                var uids = this._mClassUserDomainRepository.GetUsersByClassId(tc).Select(x => x.UserId).Distinct().ToList();
+                userIds.AddRange(uids);
+            }
+            var userIdsCounts = userIds.Distinct().ToList().Count();
+
             //Count active students
             dto.Name = "Usuarios Activos";
-            dto.Value = this._userDomainRepository.CountActiveStudents();
+            dto.Value = userIdsCounts;
             lsInfo.Add(dto);
 
             //Count all classes created
